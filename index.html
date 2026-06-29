@@ -27,7 +27,7 @@
     .font-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-800 antialiased min-h-screen">
+<body class="bg-slate-900 text-slate-800 antialiased min-h-screen overflow-x-hidden">
 
   <div id="root"></div>
 
@@ -35,7 +35,7 @@
     const { useState, useEffect, useRef } = React;
 
     // ==========================================
-    // CONFIGURAÇÃO DO FIREBASE (Coloque suas credenciais aqui se necessário)
+    // CONFIGURAÇÃO DO FIREBASE E APIs
     // ==========================================
     const firebaseConfig = { 
       apiKey: "", 
@@ -46,7 +46,7 @@
       appId: "" 
     };
 
-    // Inicializando Firebase no modo de compatibilidade para script global
+    // Inicializando Firebase
     let app, auth, db;
     if (firebaseConfig.apiKey) {
       app = firebase.initializeApp(firebaseConfig);
@@ -54,211 +54,821 @@
       db = firebase.firestore();
     }
     const appId = 'correio-elegante-default';
-    const apiKey = ""; // Sua chave do Gemini aqui
+    const apiKey = ""; // Insira sua chave API do Gemini aqui para habilitar a IA
 
-    // Ícones do Lucide adaptados para uso global no navegador
-    const Heart = () => <i data-lucide="heart" className="inline-block w-5 h-5"></i>;
+    // Mapeamento dos ícones do Lucide para tags inline reutilizáveis
+    const Heart = ({ className = "inline-block w-5 h-5" }) => <i data-lucide="heart" className={className}></i>;
     const Sparkles = () => <i data-lucide="sparkles" className="inline-block w-4 h-4 text-yellow-400"></i>;
-    const Volume2 = () => <i data-lucide="volume-2" className="inline-block w-4 h-4"></i>;
+    const Volume2 = ({ className = "inline-block w-4 h-4" }) => <i data-lucide="volume-2" className={className}></i>;
     const VolumeX = () => <i data-lucide="volume-x" className="inline-block w-4 h-4"></i>;
     const Share2 = () => <i data-lucide="share-2" className="inline-block w-5 h-5"></i>;
     const Download = () => <i data-lucide="download" className="inline-block w-3.5 h-3.5"></i>;
     const Languages = () => <i data-lucide="languages" className="inline-block w-2.5 h-2.5"></i>;
-    const Wand2 = () => <i data-lucide="wand-2" className="inline-block w-4 h-4 text-indigo-500"></i>;
+    const Wand2 = ({ className = "" }) => <i data-lucide="wand-2" className={`inline-block w-4 h-4 ${className}`}></i>;
     const Play = () => <i data-lucide="play" className="inline-block w-3.5 h-3.5 text-emerald-400"></i>;
     const Pause = () => <i data-lucide="pause" className="inline-block w-3.5 h-3.5 text-rose-400"></i>;
     const FileText = () => <i data-lucide="file-text" className="inline-block w-4 h-4 text-rose-500"></i>;
     const Layers = () => <i data-lucide="layers" className="inline-block w-4 h-4 text-rose-500"></i>;
-    const Check = () => <i data-lucide="check" className="inline-block w-5 h-5"></i>;
+    const Check = ({ className = "inline-block w-5 h-5" }) => <i data-lucide="check" className={className}></i>;
     const Eye = () => <i data-lucide="eye" className="inline-block w-3.5 h-3.5"></i>;
-    const ChevronRight = () => <i data-lucide="chevron-right" className="inline-block w-4 h-4"></i>;
+    const ChevronRight = ({ className = "inline-block w-4 h-4" }) => <i data-lucide="chevron-right" className={className}></i>;
     const ChevronLeft = () => <i data-lucide="chevron-left" className="inline-block w-5 h-5"></i>;
     const Settings = () => <i data-lucide="settings" className="inline-block w-3.5 h-3.5"></i>;
-    const Loader2 = () => <i data-lucide="loader-2" className="inline-block w-3.5 h-3.5 animate-spin"></i>;
+    const Loader2 = ({ className = "inline-block w-3.5 h-3.5 animate-spin" }) => <i data-lucide="loader-2" className={className}></i>;
 
     const THEMES = [
       {
         id: 'romantic',
         name: 'Amor Eterno',
         bgClass: 'bg-gradient-to-tr from-rose-500 via-pink-600 to-red-400',
-        cardStyle: 'bg-white/95 text-rose-900 border-pink-200 shadow-2xl',
+        cardStyle: 'bg-white/95 text-rose-900 border-pink-200 shadow-rose-500/30',
         particleColor: '#ff4d6d',
         font: 'font-serif',
+        accentColor: 'text-rose-600',
         btnColor: 'bg-rose-500 hover:bg-rose-600 text-white'
       },
       {
         id: 'friendship',
         name: 'Amizade Radiante',
         bgClass: 'bg-gradient-to-tr from-amber-400 via-orange-500 to-yellow-400',
-        cardStyle: 'bg-amber-50/95 text-amber-950 border-amber-200 shadow-2xl',
+        cardStyle: 'bg-amber-50/95 text-amber-950 border-amber-200 shadow-orange-500/20',
         particleColor: '#f77f00',
         font: 'font-sans',
+        accentColor: 'text-amber-700',
         btnColor: 'bg-amber-500 hover:bg-amber-600 text-white'
+      },
+      {
+        id: 'galaxy',
+        name: 'Espaço Sideral (Anônimo)',
+        bgClass: 'bg-gradient-to-tr from-slate-900 via-indigo-950 to-purple-900',
+        cardStyle: 'bg-slate-900/90 text-purple-200 border-purple-800 shadow-indigo-500/40 backdrop-blur-md',
+        particleColor: '#a78bfa',
+        font: 'font-mono',
+        accentColor: 'text-purple-400',
+        btnColor: 'bg-purple-600 hover:bg-purple-700 text-white'
+      },
+      {
+        id: 'retro',
+        name: 'Carta Vintage',
+        bgClass: 'bg-gradient-to-tr from-amber-100 via-stone-200 to-orange-100',
+        cardStyle: 'bg-amber-50/98 text-stone-800 border-stone-400 border-double border-4 shadow-stone-800/10',
+        particleColor: '#854d0e',
+        font: 'font-serif',
+        accentColor: 'text-amber-800',
+        btnColor: 'bg-amber-800 hover:bg-amber-900 text-white'
+      },
+      {
+        id: 'neon',
+        name: 'Neon Vibes',
+        bgClass: 'bg-gradient-to-tr from-emerald-950 via-cyan-950 to-emerald-900',
+        cardStyle: 'bg-neutral-900/90 text-cyan-400 border-cyan-500 shadow-cyan-500/30 border-2',
+        particleColor: '#06b6d4',
+        font: 'font-mono',
+        accentColor: 'text-emerald-400',
+        btnColor: 'bg-cyan-500 hover:bg-cyan-600 text-black font-bold'
       }
     ];
 
+    const FONTS = [
+      { id: 'font-serif', name: 'Serif Clássico' },
+      { id: 'font-sans', name: 'Sans Moderno' },
+      { id: 'font-mono', name: 'Mono Tech' }
+    ];
+
+    const TRANSITIONS = [
+      { id: 'fade', name: 'Desvanecer (Fade)' },
+      { id: 'slide', name: 'Deslizar (Slide)' },
+      { id: 'zoom', name: 'Zoom Suave' }
+    ];
+
     function App() {
+      // --- ESTADOS DO USUÁRIO ---
+      const [user, setUser] = useState(null);
+      const [userLetters, setUserLetters] = useState([]);
+      const [loadingAuth, setLoadingAuth] = useState(true);
+
+      // --- ESTADOS DA CARTA ATUAL ---
       const [senderName, setSenderName] = useState('');
       const [receiverName, setReceiverName] = useState('');
       const [letterContent, setLetterContent] = useState('');
       const [selectedTheme, setSelectedTheme] = useState(THEMES[0]);
       const [selectedFont, setSelectedFont] = useState('font-serif');
-      const [displayMode, setDisplayMode] = useState('traditional');
+      const [selectedTransition, setSelectedTransition] = useState('fade');
+      const [displayMode, setDisplayMode] = useState('traditional'); 
       const [customImageUrl, setCustomImageUrl] = useState('');
       const [isPlayingSynth, setIsPlayingSynth] = useState(false);
+      const [isSaved, setIsSaved] = useState(false);
+      const [currentLetterId, setCurrentLetterId] = useState('');
+
+      // --- ESTADOS DE APRESENTAÇÃO ---
       const [isRecipientView, setIsRecipientView] = useState(false);
       const [envelopeOpened, setEnvelopeOpened] = useState(false);
+      const [currentSlide, setCurrentSlide] = useState(0);
+      const [revealedChars, setRevealedChars] = useState(0);
+
+      // --- ESTADOS DOS ASSISTENTES DE IA ---
       const [aiPrompt, setAiPrompt] = useState('');
       const [aiTone, setAiTone] = useState('romantico');
       const [isGeneratingAI, setIsGeneratingAI] = useState(false);
-      const [toast, setToast] = useState({ show: false, message: '' });
+      const [isTranslating, setIsTranslating] = useState(false);
+      const [targetLang, setTargetLang] = useState('en');
 
-      // Atualiza os ícones do Lucide sempre que a tela muda
+      // --- ESTADOS DA SÍNTESE DE VOZ ---
+      const [isSpeaking, setIsSpeaking] = useState(false);
+      const [audioUrl, setAudioUrl] = useState(null);
+      const [ttsVoice, setTtsVoice] = useState('Leda'); 
+      const [loadingAudio, setLoadingAudio] = useState(false);
+      const audioRef = useRef(null);
+
+      // --- AUXILIARES GERAIS ---
+      const [toast, setToast] = useState({ show: false, message: '' });
+      const [copySuccess, setCopySuccess] = useState(false);
+      const canvasRef = useRef(null);
+      const synthAudioCtxRef = useRef(null);
+      const synthNodesRef = useRef([]);
+
+      // Força atualização dos ícones do Lucide sempre que a visualização é alterada
       useEffect(() => {
         if (window.lucide) window.lucide.createIcons();
-      }, [isRecipientView, envelopeOpened, isPlayingSynth]);
+      }, [isRecipientView, envelopeOpened, isPlayingSynth, displayMode, currentThemeId => selectedTheme.id, userLetters, isSpeaking, loadingAudio, copySuccess]);
+
+      // --- AUTENTICAÇÃO ANÔNIMA ---
+      useEffect(() => {
+        if (!auth) {
+          setLoadingAuth(false);
+          return;
+        }
+        auth.signInAnonymously()
+          .catch(err => console.error("Erro na autenticação:", err))
+          .finally(() => setLoadingAuth(false));
+
+        const unsubscribe = auth.onAuthStateChanged((usr) => {
+          setUser(usr);
+        });
+        return () => unsubscribe();
+      }, []);
+
+      // Carrega as cartas caso o usuário mude
+      useEffect(() => {
+        if (user) fetchUserLetters();
+      }, [user]);
+
+      // Rota por Hash para Compartilhamento direto
+      useEffect(() => {
+        const handleHashChange = () => {
+          const hash = window.location.hash;
+          if (hash.startsWith('#/letter/')) {
+            const id = hash.replace('#/letter/', '');
+            loadLetterFromDb(id);
+          }
+        };
+        window.addEventListener('hashchange', handleHashChange);
+        handleHashChange();
+        return () => window.removeEventListener('hashchange', handleHashChange);
+      }, []);
+
+      // --- CANVAS DE PARTÍCULAS ---
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
+
+        const resizeCanvas = () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        };
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let particles = [];
+        for (let i = 0; i < 45; i++) {
+          particles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height + canvas.height,
+            size: Math.random() * 8 + 4,
+            speedY: -(Math.random() * 1.5 + 0.5),
+            speedX: Math.random() * 1 - 0.5,
+            opacity: Math.random() * 0.5 + 0.2,
+            wobble: Math.random() * 100,
+            wobbleSpeed: Math.random() * 0.02 + 0.01
+          });
+        }
+
+        const draw = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach((p) => {
+            p.y += p.speedY;
+            p.x += p.speedX + Math.sin(p.wobble) * 0.5;
+            p.wobble += p.wobbleSpeed;
+
+            if (p.y < -20) {
+              p.y = canvas.height + 20;
+              p.x = Math.random() * canvas.width;
+            }
+
+            ctx.save();
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = selectedTheme.particleColor;
+
+            if (selectedTheme.id === 'romantic') {
+              ctx.beginPath();
+              const d = p.size;
+              ctx.moveTo(p.x, p.y + d / 4);
+              ctx.quadraticCurveTo(p.x, p.y, p.x + d / 2, p.y);
+              ctx.quadraticCurveTo(p.x + d, p.y, p.x + d, p.y + d / 3);
+              ctx.quadraticCurveTo(p.x + d, p.y + d * (2/3), p.x + d / 2, p.y + d);
+              ctx.quadraticCurveTo(p.x, p.y + d * (2/3), p.x, p.y + d / 3);
+              ctx.quadraticCurveTo(p.x, p.y, p.x, p.y + d / 4);
+              ctx.closePath();
+              ctx.fill();
+            } else if (selectedTheme.id === 'galaxy') {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y - p.size);
+              ctx.lineTo(p.x + p.size/3, p.y - p.size/3);
+              ctx.lineTo(p.x + p.size, p.y);
+              ctx.lineTo(p.x + p.size/3, p.y + p.size/3);
+              ctx.lineTo(p.x, p.y + p.size);
+              ctx.lineTo(p.x - p.size/3, p.y + p.size/3);
+              ctx.lineTo(p.x - p.size, p.y);
+              ctx.lineTo(p.x - p.size/3, p.y - p.size/3);
+              ctx.closePath();
+              ctx.fill();
+            } else {
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            ctx.restore();
+          });
+          animationFrameId = requestAnimationFrame(draw);
+        };
+        draw();
+
+        return () => {
+          cancelAnimationFrame(animationFrameId);
+          window.removeEventListener('resize', resizeCanvas);
+        };
+      }, [selectedTheme]);
+
+      // --- REVELAÇÃO GRADUAL ---
+      useEffect(() => {
+        if (displayMode === 'gradual' && envelopeOpened) {
+          setRevealedChars(0);
+          const interval = setInterval(() => {
+            setRevealedChars((prev) => {
+              if (prev >= letterContent.length) {
+                clearInterval(interval);
+                return letterContent.length;
+              }
+              return prev + 2;
+            });
+          }, 50);
+          return () => clearInterval(interval);
+        }
+      }, [displayMode, envelopeOpened, letterContent]);
+
+      // --- MÚSICA DE FUNDO COM SINTETIZADOR WEB AUDIO API ---
+      const toggleAmbientMusic = () => {
+        if (isPlayingSynth) {
+          if (synthAudioCtxRef.current) {
+            synthAudioCtxRef.current.close();
+            synthAudioCtxRef.current = null;
+          }
+          setIsPlayingSynth(false);
+          showToast('Música de fundo pausada.');
+        } else {
+          try {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const ctx = new AudioContext();
+            synthAudioCtxRef.current = ctx;
+
+            const progression = [
+              [130.81, 164.81, 196.00, 246.94, 293.66], // Cmaj9
+              [110.00, 130.81, 164.81, 220.00, 261.63], // Am9
+              [87.31, 130.81, 174.61, 220.00, 261.63],  // Fmaj7
+              [98.00, 146.83, 196.00, 246.94, 293.66]   // G6
+            ];
+            let currentChordIndex = 0;
+
+            const playChord = () => {
+              if (!synthAudioCtxRef.current) return;
+              const now = synthAudioCtxRef.current.currentTime;
+              const chord = progression[currentChordIndex];
+
+              chord.forEach((freq) => {
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                const filter = ctx.createBiquadFilter();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, now);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(400, now);
+
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.04 / chord.length, now + 3);
+                gain.gain.setValueAtTime(0.04 / chord.length, now + 7);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 12);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(ctx.destination);
+
+                osc.start(now);
+                osc.stop(now + 12.5);
+              });
+
+              currentChordIndex = (currentChordIndex + 1) % progression.length;
+              synthNodesRef.current.push(setTimeout(playChord, 10000));
+            };
+
+            playChord();
+            setIsPlayingSynth(true);
+            showToast('Música ambiente via Sintetizador ativada!');
+          } catch (err) {
+            showToast('Toque novamente para liberar o áudio do navegador.');
+          }
+        }
+      };
+
+      useEffect(() => {
+        return () => {
+          synthNodesRef.current.forEach(timer => clearTimeout(timer));
+          if (synthAudioCtxRef.current) synthAudioCtxRef.current.close();
+        };
+      }, []);
+
+      // --- FIRESTORE OPERAÇÕES ---
+      const fetchUserLetters = async () => {
+        if (!db || !user) return;
+        try {
+          const snap = await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').get();
+          const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setUserLetters(list);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+
+      const saveLetter = async () => {
+        if (!db || !user) {
+          showToast('Banco de dados indisponível ou desconectado.');
+          return;
+        }
+        if (!letterContent.trim()) {
+          showToast('Escreva sua mensagem antes de salvar.');
+          return;
+        }
+        try {
+          const data = {
+            senderName,
+            receiverName,
+            letterContent,
+            themeId: selectedTheme.id,
+            font: selectedFont,
+            transition: selectedTransition,
+            displayMode,
+            customImageUrl,
+            createdAt: new Date().toISOString()
+          };
+
+          const publicRef = await db.collection('artifacts').doc(appId).collection('public').document('data').collection('letters').add(data);
+          await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').doc(publicRef.id).set(data);
+
+          setCurrentLetterId(publicRef.id);
+          setIsSaved(true);
+          fetchUserLetters();
+          showToast('Carta salva online e link gerado!');
+        } catch (err) {
+          showToast('Erro ao salvar no banco de dados.');
+        }
+      };
+
+      const loadLetterFromDb = async (id) => {
+        if (!db) return;
+        try {
+          const snapshot = await db.collection('artifacts').doc(appId).collection('public').document('data').collection('letters').doc(id).get();
+          if (snapshot.exists) {
+            const data = snapshot.data();
+            setSenderName(data.senderName || '');
+            setReceiverName(data.receiverName || '');
+            setLetterContent(data.letterContent || '');
+            setSelectedTheme(THEMES.find(t => t.id === data.themeId) || THEMES[0]);
+            setSelectedFont(data.font || 'font-serif');
+            setSelectedTransition(data.transition || 'fade');
+            setDisplayMode(data.displayMode || 'traditional');
+            setCustomImageUrl(data.customImageUrl || '');
+            setIsRecipientView(true);
+            setEnvelopeOpened(false);
+            showToast('Carta carregada via nuvem!');
+          }
+        } catch (err) {
+          showToast('Erro ao baixar os dados da carta.');
+        }
+      };
+
+      // --- BACKOFF EXPONENCIAL ---
+      const fetchWithBackoff = async (url, payload, retries = 4, delay = 1000) => {
+        for (let i = 0; i < retries; i++) {
+          try {
+            const response = await fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (response.ok) return await response.json();
+          } catch (err) {
+            if (i === retries - 1) throw err;
+          }
+          await new Promise(res => setTimeout(res, delay));
+          delay *= 2;
+        }
+        throw new Error('Falha na requisição.');
+      };
+
+      // --- ASSISTENTE DE ESCRITA IA ---
+      const handleGenerateAI = async () => {
+        if (!aiPrompt.trim() || !apiKey) {
+          showToast(apiKey ? 'Digite sua ideia para a carta.' : 'Defina a variável apiKey no código HTML.');
+          return;
+        }
+        setIsGeneratingAI(true);
+        const systemPrompt = `Você é um escritor poético e empático de Correio Elegante. Escreva uma linda mensagem baseando-se no tom escolhido pelo usuário (${aiTone}). IMPORTANTE: Escreva apenas a mensagem final de forma direta, sem introduções ou observações extras.`;
+        
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+          const payload = {
+            contents: [{ parts: [{ text: `Mensagem sobre: "${aiPrompt}". Remetente: "${senderName}", Destinatário: "${receiverName}".` }] }],
+            systemInstruction: { parts: [{ text: systemPrompt }] }
+          };
+          const result = await fetchWithBackoff(url, payload);
+          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) setLetterContent(text);
+        } catch (err) {
+          showToast('Erro na IA de escrita.');
+        } finally {
+          setIsGeneratingAI(false);
+        }
+      };
+
+      // --- TRADUTOR IA ---
+      const handleTranslateAI = async () => {
+        if (!letterContent.trim() || !apiKey) {
+          showToast('Escreva algo na carta para traduzir.');
+          return;
+        }
+        setIsTranslating(true);
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+          const payload = {
+            contents: [{ parts: [{ text: letterContent }] }],
+            systemInstruction: { parts: [{ text: `Traduza perfeitamente o texto fornecido mantendo toda poesia e sentimento intactos para o idioma destino: "${targetLang}". Retorne somente o texto traduzido.` }] }
+          };
+          const result = await fetchWithBackoff(url, payload);
+          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) setLetterContent(text);
+        } catch (err) {
+          showToast('Erro ao traduzir.');
+        } finally {
+          setIsTranslating(false);
+        }
+      };
+
+      // --- NARRADOR GEMINI TTS COM CONVERSOR PCM PARA WAV ---
+      const speakLetterAI = async () => {
+        if (!letterContent.trim() || !apiKey) {
+          showToast('Sem texto ou sem chave API configurada.');
+          return;
+        }
+        if (audioUrl) {
+          if (isSpeaking) {
+            audioRef.current.pause();
+            setIsSpeaking(false);
+          } else {
+            audioRef.current.play();
+            setIsSpeaking(true);
+          }
+          return;
+        }
+
+        setLoadingAudio(true);
+        showToast('Gerando narração via IA...');
+
+        try {
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+          const payload = {
+            contents: [{ parts: [{ text: `Leia com voz calorosa e suave, respeitando as pausas: ${letterContent}` }] }],
+            generationConfig: {
+              responseModalities: ["AUDIO"],
+              speechConfig: {
+                voiceConfig: { prebuiltVoiceConfig: { voiceName: ttsVoice } }
+              }
+            },
+            model: "gemini-2.5-flash-preview-tts"
+          };
+
+          const result = await fetchWithBackoff(url, payload);
+          const inlineData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData;
+          
+          if (inlineData && inlineData.data) {
+            const wavUrl = pcmToWav(inlineData.data, 24000);
+            setAudioUrl(wavUrl);
+            setIsSpeaking(true);
+            setTimeout(() => { if (audioRef.current) audioRef.current.play(); }, 150);
+          }
+        } catch (err) {
+          showToast('Falha no sintetizador de voz do Gemini.');
+        } finally {
+          setLoadingAudio(false);
+        }
+      };
+
+      const pcmToWav = (pcmBase64, sampleRate = 24000) => {
+        const binaryString = atob(pcmBase64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
+        
+        const wavHeader = new ArrayBuffer(44);
+        const view = new DataView(wavHeader);
+        view.setUint32(0, 0x52494646, false); 
+        view.setUint32(4, 36 + len, true);   
+        view.setUint32(8, 0x57415645, false); 
+        view.setUint32(12, 0x666d7420, false); 
+        view.setUint32(16, 16, true);        
+        view.setUint16(20, 1, true);         
+        view.setUint16(22, 1, true);         
+        view.setUint32(24, sampleRate, true); 
+        view.setUint32(28, sampleRate * 2, true); 
+        view.setUint16(32, 2, true);         
+        view.setUint16(34, 16, true);        
+        view.setUint32(36, 0x64617461, false); 
+        view.setUint32(40, len, true);       
+
+        return URL.createObjectURL(new Blob([wavHeader, bytes.buffer], { type: 'audio/wav' }));
+      };
+
+      // --- EXPORTAR CARTÃO INTERATIVO ---
+      const downloadInteractiveCard = () => {
+        if (!letterContent) return;
+        const htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="UTF-8">
+          <script src="https://cdn.tailwindcss.com"><\/script>
+        </head>
+        <body class="${selectedTheme.bgClass} flex items-center justify-center min-h-screen p-4">
+          <div class="max-w-xl w-full ${selectedTheme.cardStyle} p-8 rounded-3xl border shadow-2xl text-center">
+            <h2 class="text-2xl font-bold mb-4">Para: ${receiverName || 'Especial'}</h2>
+            ${customImageUrl ? `<img src="${customImageUrl}" class="w-full max-h-48 object-cover rounded-xl mb-4"/>` : ''}
+            <p class="${selectedFont} text-lg leading-relaxed whitespace-pre-line">${letterContent}</p>
+            <p class="mt-4 italic opacity-60">De: ${senderName || 'Anônimo'}</p>
+          </div>
+        </body>
+        </html>`;
+        const element = document.createElement("a");
+        element.href = URL.createObjectURL(new Blob([htmlContent], { type: 'text/html' }));
+        element.download = `Correio_Elegante_${receiverName || 'Especial'}.html`;
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      };
+
+      const copyShareLink = () => {
+        if (!currentLetterId) return;
+        const link = `${window.location.origin}${window.location.pathname}#/letter/${currentLetterId}`;
+        const input = document.createElement('input');
+        document.body.appendChild(input);
+        input.value = link;
+        input.select();
+        document.execCommand('copy');
+        document.body.removeChild(input);
+        setCopySuccess(true);
+        showToast('Link de compartilhamento copiado!');
+        setTimeout(() => setCopySuccess(false), 2000);
+      };
 
       const showToast = (message) => {
         setToast({ show: true, message });
         setTimeout(() => setToast({ show: false, message: '' }), 4000);
       };
 
-      const handleGenerateAI = async () => {
-        if (!aiPrompt.trim() || !apiKey) {
-          showToast(apiKey ? 'Digite o que quer na carta.' : 'Insira sua chave API do Gemini no código.');
-          return;
-        }
-        setIsGeneratingAI(true);
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-          const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              contents: [{ parts: [{ text: `Escreva uma mensagem de correio elegante sobre: "${aiPrompt}". Remetente: "${senderName}", Destinatário: "${receiverName}". Tom: ${aiTone}. Retorne apenas a carta, sem introduções.` }] }]
-            })
-          });
-          const result = await response.json();
-          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) setLetterContent(text);
-        } catch (err) {
-          showToast('Erro ao gerar texto com IA.');
-        } finally {
-          setIsGeneratingAI(false);
-        }
-      };
+      const getSlides = () => letterContent.split('\n\n').filter(p => p.trim() !== '');
 
       return (
-        <div className={`relative min-h-screen flex flex-col justify-between transition-all duration-1000 ${selectedTheme.bgClass}`}>
-          
+        <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
+          <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
+          <div className={`fixed inset-0 -z-10 transition-all duration-1000 ${selectedTheme.bgClass}`} />
+
           {toast.show && (
             <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-2 px-5 py-3 rounded-full shadow-2xl bg-slate-900 text-white text-sm">
               <Sparkles /> <span>{toast.message}</span>
             </div>
           )}
 
-          <header className="px-6 py-4 flex items-center justify-between bg-white/10 backdrop-blur-md text-white shadow-md">
+          <header className="relative z-10 px-6 py-4 flex items-center justify-between bg-white/10 backdrop-blur-md border-b border-white/10 text-white shadow-md">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 p-2 rounded-xl"><Heart /></div>
+              <div className="bg-white/20 p-2 rounded-xl"><Heart className="w-6 h-6 fill-rose-500 text-rose-500 animate-pulse" /></div>
               <div>
                 <h1 className="font-extrabold text-lg tracking-wider">L&B Correio Elegante</h1>
+                <p className="text-xs opacity-75">Crie mensagens que encantam corações</p>
               </div>
             </div>
-            {isRecipientView && (
-              <button onClick={() => { setIsRecipientView(false); setEnvelopeOpened(false); }} className="bg-white/20 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1">
-                <Settings /> Voltar ao Editor
+            <div className="flex items-center gap-2">
+              <button onClick={toggleAmbientMusic} className="bg-white/20 hover:bg-white/30 p-2.5 rounded-full text-white transition flex items-center gap-1.5 text-xs font-semibold">
+                {isPlayingSynth ? <Volume2 /> : <VolumeX />}
+                <span>{isPlayingSynth ? 'Sintetizador ON' : 'Sem Áudio'}</span>
               </button>
-            )}
+              {isRecipientView && (
+                <button onClick={() => { setIsRecipientView(false); setAudioUrl(null); setIsSpeaking(false); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
+                  <Settings /> Voltar ao Editor
+                </button>
+              )}
+            </div>
           </header>
 
           {isRecipientView ? (
-            <main className="flex-grow flex items-center justify-center p-4">
+            <main className="relative z-10 flex-grow flex items-center justify-center p-4">
               {!envelopeOpened ? (
-                <div onClick={() => setEnvelopeOpened(true)} className="cursor-pointer max-w-lg w-full aspect-[4/3] bg-amber-50 rounded-3xl shadow-2xl p-6 border-4 border-amber-200 flex flex-col justify-between items-center transform hover:scale-105 transition">
-                  <div className="text-center mt-20">
-                    <h3 className="text-2xl font-serif text-stone-800">Para: <span className="font-extrabold underline">{receiverName || 'Alguém Especial'}</span></h3>
+                <div onClick={() => setEnvelopeOpened(true)} className="group cursor-pointer relative max-w-lg w-full aspect-[4/3] bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl shadow-2xl p-6 border-4 border-amber-200 flex flex-col justify-between items-center transition-transform hover:scale-105 duration-300">
+                  <div className="absolute top-0 inset-x-0 h-1/2 bg-amber-200/50 rounded-b-[100px] shadow-inner flex justify-center items-start pt-4">
+                    <div className="bg-rose-500 p-3 rounded-full text-white shadow-lg"><Heart className="w-8 h-8 fill-white text-white" /></div>
                   </div>
-                  <div className="text-xs text-amber-700 font-semibold animate-bounce mb-4">Clique para abrir o envelope <ChevronRight /></div>
+                  <div className="mt-28 text-center">
+                    <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">Mensagem Especial Recebida</span>
+                    <h3 className="text-2xl font-serif mt-2 text-stone-800">Para: <span className="font-extrabold underline">{receiverName || 'Alguém Especial'}</span></h3>
+                  </div>
+                  <div className="text-center text-xs text-amber-700/80 font-medium flex items-center gap-1 animate-bounce">Clique para abrir o envelope <ChevronRight /></div>
                 </div>
               ) : (
-                <div className={`max-w-2xl w-full ${selectedTheme.cardStyle} p-8 rounded-3xl border shadow-2xl relative`}>
+                <div className={`max-w-2xl w-full ${selectedTheme.cardStyle} p-6 md:p-10 rounded-3xl border shadow-2xl relative`}>
+                  <div className="absolute -top-12 right-0 flex gap-2">
+                    <button onClick={speakLetterAI} disabled={loadingAudio} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                      {loadingAudio ? <Loader2 /> : isSpeaking ? <Pause /> : <Play />}
+                      {isSpeaking ? 'Pausar' : 'Narração AI'}
+                    </button>
+                    <button onClick={downloadInteractiveCard} className="bg-white text-slate-800 border px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg"><Download /> Baixar HTML</button>
+                  </div>
+
                   <div className="border-b border-current/20 pb-4 mb-6 flex justify-between items-end">
-                    <div>
-                      <span className="text-xs uppercase opacity-70 font-bold">Para</span>
-                      <h4 className="text-2xl font-extrabold">{receiverName || 'Alguém Especial'}</h4>
-                    </div>
-                    {senderName && (
-                      <div className="text-right">
-                        <span className="text-xs uppercase opacity-70 font-bold">De</span>
-                        <h4 className="text-xl font-semibold italic">~{senderName}</h4>
+                    <div><span className="text-xs uppercase opacity-70">Para</span><h4 className="text-xl font-bold">{receiverName || 'Alguém Especial'}</h4></div>
+                    {senderName && <div className="text-right"><span className="text-xs opacity-70 uppercase">De</span><h4 className="text-lg font-semibold italic">~{senderName}</h4></div>}
+                  </div>
+
+                  {customImageUrl && <div className="mb-6 rounded-2xl overflow-hidden shadow-lg"><img src={customImageUrl} className="w-full max-h-64 object-cover" /></div>}
+
+                  {displayMode === 'traditional' && <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line text-center py-4`}>{letterContent || 'Nenhuma mensagem escrita ainda...'}</div>}
+
+                  {displayMode === 'slides' && (
+                    <div className="min-h-[200px] flex flex-col justify-between py-4">
+                      <div className={`text-center ${selectedFont} text-lg md:text-xl leading-relaxed`}>{getSlides()[currentSlide] || 'Nenhum parágrafo separado.'}</div>
+                      <div className="flex justify-between items-center mt-6 pt-4 border-t border-current/10">
+                        <button disabled={currentSlide === 0} onClick={() => setCurrentSlide(p => Math.max(0, p - 1))} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronLeft /></button>
+                        <span className="text-xs font-semibold">Slide {currentSlide + 1} de {getSlides().length}</span>
+                        <button disabled={currentSlide >= getSlides().length - 1} onClick={() => setCurrentSlide(p => Math.min(getSlides().length - 1, p + 1))} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronRight /></button>
                       </div>
-                    )}
-                  </div>
-                  {customImageUrl && <img src={customImageUrl} className="w-full max-h-64 object-cover rounded-2xl mb-6 shadow-md" />}
-                  <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line text-center py-4`}>
-                    {letterContent || 'Nenhuma mensagem escrita ainda...'}
-                  </div>
+                    </div>
+                  )}
+
+                  {displayMode === 'gradual' && (
+                    <div className="min-h-[150px] text-center py-4">
+                      <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line`}>{letterContent.substring(0, revealedChars)}</div>
+                    </div>
+                  )}
                 </div>
               )}
             </main>
           ) : (
-            <main className="flex-grow max-w-4xl mx-auto w-full px-4 py-6 grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-              <div className="md:col-span-7 bg-white/95 rounded-3xl shadow-2xl p-6 flex flex-col gap-4">
-                <div className="flex justify-between items-center border-b pb-2">
-                  <h3 className="text-xl font-bold text-slate-800">Escreva sua Mensagem</h3>
-                  <button onClick={() => setIsRecipientView(true)} className="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1"><Eye /> Ver Carta</button>
+            <main className="relative z-10 flex-grow max-w-7xl mx-auto w-full px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+              <div className="lg:col-span-7 bg-white/95 rounded-3xl shadow-xl p-6 border flex flex-col gap-6">
+                <div className="border-b pb-4 flex justify-between items-center">
+                  <div>
+                    <h3 className="text-xl font-bold text-slate-800">Escreva sua Mensagem</h3>
+                    <p className="text-xs text-slate-500">Personalize cada detalhe da sua declaração</p>
+                  </div>
+                  <button onClick={() => setIsRecipientView(true)} className="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"><Eye /> Visualizar</button>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 mb-1">Para:</label>
-                    <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Nome de quem recebe" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400" />
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Para:</label>
+                    <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Nome do destinatário" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-500 mb-1">De:</label>
-                    <input type="text" value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Anônimo se vazio" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400" />
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-1">De:</label>
+                    <input type="text" value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Em branco para Anônimo" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
                   </div>
                 </div>
 
-                <div className="bg-indigo-50 rounded-2xl p-4 border border-indigo-100">
-                  <div className="flex items-center gap-2 mb-2 text-xs font-bold text-indigo-900"><Wand2 /> Gerador de Carta IA</div>
-                  <div className="flex gap-2">
-                    <input type="text" value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder="Ex: Agradecendo por me fazer rir..." className="flex-grow bg-white border rounded-xl px-3 py-2 text-xs focus:outline-none" />
-                    <button onClick={handleGenerateAI} disabled={isGeneratingAI} className="bg-indigo-600 text-white text-xs px-4 py-2 rounded-xl font-bold flex items-center justify-center">
-                      {isGeneratingAI ? <Loader2 /> : 'Gerar'}
-                    </button>
+                <div className="bg-gradient-to-r from-violet-50 to-indigo-50 border border-indigo-100 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 mb-2 text-indigo-900 font-bold text-sm"><Wand2 /> <span>Escritor Assistente IA</span></div>
+                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
+                    <input type="text" value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder="Ex: Agradecendo por estar sempre do meu lado..." className="md:col-span-8 bg-white border rounded-xl px-3 py-2 text-xs focus:outline-none" />
+                    <div className="md:col-span-4 flex gap-2">
+                      <select value={aiTone} onChange={(e) => setAiTone(e.target.value)} className="bg-white border rounded-xl px-2 text-xs text-slate-700">
+                        <option value="romantico">💘 Romântico</option>
+                        <option value="amizade">🌟 Amigo</option>
+                        <option value="divertido">🤪 Engraçado</option>
+                      </select>
+                      <button onClick={handleGenerateAI} disabled={isGeneratingAI} className="bg-indigo-600 text-white rounded-xl text-xs font-bold px-4 flex items-center justify-center">{isGeneratingAI ? <Loader2 /> : 'Gerar'}</button>
+                    </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-1">Mensagem:</label>
-                  <textarea value={letterContent} onChange={(e) => setLetterContent(e.target.value)} rows={5} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 font-serif" />
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-xs font-bold uppercase text-slate-500">Mensagem da Carta:</label>
+                    <div className="flex items-center gap-1.5">
+                      <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} className="bg-slate-100 text-[10px] rounded p-1">
+                        <option value="en">🇺🇸 Inglês</option>
+                        <option value="es">🇪🇸 Espanhol</option>
+                        <option value="fr">🇫🇷 Francês</option>
+                      </select>
+                      <button onClick={handleTranslateAI} disabled={isTranslating} className="bg-slate-800 text-white px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
+                        {isTranslating ? <Loader2 /> : <Languages />} Traduzir
+                      </button>
+                    </div>
+                  </div>
+                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); setAudioUrl(null); }} rows={6} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-serif leading-relaxed" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-500 mb-1">URL de Imagem/GIF de Fundo:</label>
+                  <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Link de Imagem ou GIF Decorativo:</label>
                   <input type="text" value={customImageUrl} onChange={(e) => setCustomImageUrl(e.target.value)} placeholder="https://..." className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-xs focus:outline-none" />
+                </div>
+
+                <div className="bg-slate-50 border rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+                  <div className="flex items-center gap-2"><Volume2 /> <span className="text-xs font-bold">Voz do Narrador AI</span></div>
+                  <select value={ttsVoice} onChange={(e) => { setTtsVoice(e.target.value); setAudioUrl(null); }} className="bg-white border rounded-xl px-3 py-1.5 text-xs text-slate-700">
+                    <option value="Leda">Voz Leda (Suave)</option>
+                    <option value="Zephyr">Voz Zephyr (Animada)</option>
+                    <option value="Puck">Voz Puck (Divertida)</option>
+                    <option value="Kore">Voz Kore (Profunda)</option>
+                  </select>
+                </div>
+
+                <div className="border-t pt-4 flex flex-col sm:flex-row gap-3">
+                  <button onClick={saveLetter} className="flex-grow bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-md"><Check /> Salvar Carta Online</button>
+                  {isSaved && <button onClick={copyShareLink} className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition">{copySuccess ? <Check /> : <Share2 />} {copySuccess ? 'Copiado!' : 'Copiar Link'}</button>}
                 </div>
               </div>
 
-              <div className="md:col-span-5 flex flex-col gap-6">
+              <div className="lg:col-span-5 flex flex-col gap-6">
                 <div className="bg-white/95 rounded-3xl shadow-xl p-5 border">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><Layers /> Escolha o Tema</h3>
-                  <div className="flex flex-col gap-2">
-                    {THEMES.map(t => (
-                      <button key={t.id} onClick={() => setSelectedTheme(t)} className={`p-3 rounded-2xl border text-left flex items-center justify-between ${selectedTheme.id === t.id ? 'border-rose-500 bg-rose-50' : 'bg-white'}`}>
-                        <span className="text-xs font-bold">{t.name}</span>
-                        <div className={`w-6 h-6 rounded-full ${t.bgClass}`} />
+                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><Layers /> Tema e Cores</h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {THEMES.map((theme) => (
+                      <button key={theme.id} onClick={() => setSelectedTheme(theme)} className={`p-3 rounded-2xl border text-left flex items-center justify-between ${selectedTheme.id === theme.id ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-100'}`}>
+                        <span className="text-xs font-bold text-slate-800">{theme.name}</span>
+                        <div className={`w-6 h-6 rounded-full ${theme.bgClass}`} />
                       </button>
                     ))}
                   </div>
+                </div>
+
+                <div className="bg-white/95 rounded-3xl shadow-xl p-5 border space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Tipografia (Fonte):</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {FONTS.map(f => <button key={f.id} onClick={() => setSelectedFont(f.id)} className={`py-1.5 text-xs rounded-xl border text-center ${selectedFont === f.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{f.name}</button>)}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Formato de Exibição:</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button onClick={() => setDisplayMode('traditional')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'traditional' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>📃 Normal</button>
+                      <button onClick={() => setDisplayMode('slides')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'slides' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>🎴 Slides</button>
+                      <button onClick={() => setDisplayMode('gradual')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'gradual' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>✍️ Tipo</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white/95 rounded-3xl shadow-xl p-5 border">
+                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><FileText /> Minhas Cartas Recentes</h3>
+                  {userLetters.length === 0 ? (
+                    <p className="text-xs text-slate-400 italic text-center py-2">Nenhuma carta arquivada.</p>
+                  ) : (
+                    <div className="max-h-40 overflow-y-auto space-y-2">
+                      {userLetters.map(l => (
+                        <div key={l.id} className="p-2.5 bg-slate-50 rounded-xl flex items-center justify-between border text-xs">
+                          <span className="truncate font-bold text-slate-700">Para: {l.receiverName || 'Alguém'}</span>
+                          <button onClick={() => loadLetterFromDb(l.id)} className="bg-rose-500 text-white p-1 rounded-lg"><Eye /></button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </main>
           )}
 
-          <footer className="py-4 text-center text-xs text-white/70 bg-black/20 backdrop-blur-md">
-            <p>© 2026 Love&Bond Correio Elegante - Feito com Amor.</p>
+          {audioUrl && <audio ref={audioRef} src={audioUrl} onEnded={() => setIsSpeaking(false)} className="hidden" />}
+
+          <footer className="relative z-10 py-4 text-center text-xs text-white/70 bg-black/15 mt-8 backdrop-blur-sm">
+            <p>© 2026 Love&Bond Correio Elegante - Feito para espalhar sorrisos.</p>
           </footer>
         </div>
       );
