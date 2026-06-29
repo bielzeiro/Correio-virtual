@@ -23,11 +23,17 @@
     .font-serif { font-family: 'Playfair Display', Georgia, serif; }
     .font-mono { font-family: 'JetBrains Mono', Courier, monospace; }
     .font-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
-    /* Novas classes de fontes mapeadas */
     .font-cinzel { font-family: 'Cinzel', serif; }
     .font-sacramento { font-family: 'Sacramento', cursive; }
     .font-montserrat { font-family: 'Montserrat', sans-serif; }
     .font-caveat { font-family: 'Caveat', cursive; }
+
+    @keyframes shake {
+      0%, 100% { transform: rotate(0deg); }
+      20%, 60% { transform: rotate(-6deg); }
+      40%, 80% { transform: rotate(6deg); }
+    }
+    .animate-shake { animation: shake 0.5s ease-in-out infinite; }
   </style>
 </head>
 <body class="bg-slate-900 text-slate-800 antialiased min-h-screen overflow-x-hidden">
@@ -112,99 +118,44 @@
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}><line x1="12" x2="12" y1="2" y2="6"/><line x1="12" x2="12" y1="18" y2="22"/><line x1="4.93" x2="7.76" y1="4.93" y2="7.76"/><line x1="16.24" x2="19.07" y1="16.24" y2="19.07"/><line x1="2" x2="6" y1="12" y2="12"/><line x1="18" x2="22" y1="12" y2="12"/><line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg>
     );
 
-    // Lista Expandida de Temas Vips e Customizados
     const THEMES = [
-      {
-        id: 'romantic',
-        name: 'Amor Eterno',
-        bgClass: 'bg-gradient-to-tr from-rose-500 via-pink-600 to-red-400',
-        cardStyle: 'bg-white/95 text-rose-900 border-pink-200 shadow-rose-500/30 rounded-3xl border shadow-2xl',
-        particleColor: '#ff4d6d',
-        font: 'font-serif',
-        accentColor: 'text-rose-600',
-        btnColor: 'bg-rose-500 hover:bg-rose-600 text-white'
-      },
-      {
-        id: 'cyberpunk',
-        name: 'Futurista Cíber',
-        bgClass: 'bg-gradient-to-tr from-purple-900 via-violet-950 to-fuchsia-900',
-        cardStyle: 'bg-black/85 text-fuchsia-400 border-fuchsia-500 shadow-fuchsia-500/40 rounded-none border-2 border-dashed font-mono uppercase tracking-wider',
-        particleColor: '#d946ef',
-        font: 'font-mono',
-        accentColor: 'text-fuchsia-400',
-        btnColor: 'bg-fuchsia-600 hover:bg-fuchsia-700 text-white'
-      },
-      {
-        id: 'sunset',
-        name: 'Pôr do Sol Dourado',
-        bgClass: 'bg-gradient-to-tr from-amber-600 via-orange-500 to-rose-500',
-        cardStyle: 'bg-stone-50/95 text-amber-950 border-orange-300 shadow-orange-500/30 rounded-[2rem] border-t-8 border-t-orange-500',
-        particleColor: '#f97316',
-        font: 'font-sans',
-        accentColor: 'text-amber-700',
-        btnColor: 'bg-orange-500 hover:bg-orange-600 text-white'
-      },
-      {
-        id: 'friendship',
-        name: 'Amizade Radiante',
-        bgClass: 'bg-gradient-to-tr from-amber-400 via-orange-500 to-yellow-400',
-        cardStyle: 'bg-amber-50/95 text-amber-950 border-amber-200 shadow-orange-500/20 rounded-2xl',
-        particleColor: '#f77f00',
-        font: 'font-sans',
-        accentColor: 'text-amber-700',
-        btnColor: 'bg-amber-500 hover:bg-amber-600 text-white'
-      },
-      {
-        id: 'galaxy',
-        name: 'Espaço Sideral',
-        bgClass: 'bg-gradient-to-tr from-slate-900 via-indigo-950 to-purple-900',
-        cardStyle: 'bg-slate-900/90 text-purple-200 border-purple-800 shadow-indigo-500/40 backdrop-blur-md rounded-3xl',
-        particleColor: '#a78bfa',
-        font: 'font-mono',
-        accentColor: 'text-purple-400',
-        btnColor: 'bg-purple-600 hover:bg-purple-700 text-white'
-      },
-      {
-        id: 'retro',
-        name: 'Carta Vintage',
-        bgClass: 'bg-gradient-to-tr from-amber-100 via-stone-200 to-orange-100',
-        cardStyle: 'bg-amber-50/98 text-stone-800 border-stone-400 border-double border-4 shadow-stone-800/10 rounded-sm p-12',
-        particleColor: '#854d0e',
-        font: 'font-serif',
-        accentColor: 'text-amber-800',
-        btnColor: 'bg-amber-800 hover:bg-amber-900 text-white'
-      },
-      {
-        id: 'royal',
-        name: 'Monarquia Real',
-        bgClass: 'bg-gradient-to-tr from-indigo-950 via-blue-900 to-slate-900',
-        cardStyle: 'bg-white/95 text-indigo-950 border-amber-500 border-4 shadow-xl rounded-xl border-double shadow-amber-500/10',
-        particleColor: '#fbbf24',
-        font: 'font-cinzel',
-        accentColor: 'text-amber-600',
-        btnColor: 'bg-indigo-900 hover:bg-indigo-950 text-white'
-      },
-      {
-        id: 'neon',
-        name: 'Neon Vibes',
-        bgClass: 'bg-gradient-to-tr from-emerald-950 via-cyan-950 to-emerald-900',
-        cardStyle: 'bg-neutral-900/90 text-cyan-400 border-cyan-500 shadow-cyan-500/30 border-2 rounded-2xl',
-        particleColor: '#06b6d4',
-        font: 'font-mono',
-        accentColor: 'text-emerald-400',
-        btnColor: 'bg-cyan-500 hover:bg-cyan-600 text-black font-bold'
-      }
+      { id: 'romantic', name: 'Amor Eterno', bgClass: 'bg-gradient-to-tr from-rose-500 via-pink-600 to-red-400', font: 'font-serif', btnColor: 'bg-rose-500 hover:bg-rose-600' },
+      { id: 'cyberpunk', name: 'Futurista Cíber', bgClass: 'bg-gradient-to-tr from-purple-900 via-violet-950 to-fuchsia-900', font: 'font-mono', btnColor: 'bg-fuchsia-600 hover:bg-fuchsia-700' },
+      { id: 'sunset', name: 'Pôr do Sol Dourado', bgClass: 'bg-gradient-to-tr from-amber-600 via-orange-500 to-rose-500', font: 'font-sans', btnColor: 'bg-orange-500 hover:bg-orange-600' },
+      { id: 'galaxy', name: 'Espaço Sideral', bgClass: 'bg-gradient-to-tr from-slate-900 via-indigo-950 to-purple-900', font: 'font-mono', btnColor: 'bg-purple-600 hover:bg-purple-700' }
     ];
 
-    // Lista Expandida de Fontes Customizadas
     const FONTS = [
       { id: 'font-serif', name: 'Clássico Serif' },
       { id: 'font-sans', name: 'Moderno Sans' },
       { id: 'font-mono', name: 'Tech Código' },
-      { id: 'font-cinzel', name: 'Cinzel Real' },
       { id: 'font-sacramento', name: 'Sacramento Cursiva' },
-      { id: 'font-montserrat', name: 'Montserrat Clean' },
       { id: 'font-caveat', name: 'Caveat Manuscrita' }
+    ];
+
+    const CARD_COLORS = [
+      { id: 'bg-white/95 text-slate-900', name: 'Branco Clássico' },
+      { id: 'bg-amber-50/95 text-amber-950', name: 'Pergaminho Antigo' },
+      { id: 'bg-rose-50/95 text-rose-950', name: 'Rosa Delicado' },
+      { id: 'bg-slate-900/90 text-slate-100', name: 'Escuro Profundo' }
+    ];
+
+    const OPEN_METHODS = [
+      { id: 'rip', name: 'Rasgar Envelope' },
+      { id: 'shake', name: 'Balançar para Abrir' },
+      { id: 'slide', name: 'Folha saindo para cima' }
+    ];
+
+    const ENTER_ANIMATIONS = [
+      { id: 'scale', name: 'Zoom Suave', class: 'scale-100 duration-500' },
+      { id: 'fade-up', name: 'Subir Flutuando', class: 'translate-y-0 opacity-100 duration-700' },
+      { id: 'rotate', name: 'Giro Elegante', class: 'rotate-0 duration-500' }
+    ];
+
+    const SPECIAL_EFFECTS = [
+      { id: 'sparkles', name: '✨ Brilhos Cintilantes', color: '#fbbf24' },
+      { id: 'flowers', name: '🌸 Pétalas de Flores', color: '#f472b6' },
+      { id: 'explosions', name: '💥 Explosões de Coração', color: '#ef4444' }
     ];
 
     function App() {
@@ -217,6 +168,10 @@
       const [letterContent, setLetterContent] = useState('');
       const [selectedTheme, setSelectedTheme] = useState(THEMES[0]);
       const [selectedFont, setSelectedFont] = useState('font-serif');
+      const [cardColor, setCardColor] = useState(CARD_COLORS[0].id);
+      const [openMethod, setOpenMethod] = useState('rip');
+      const [enterAnim, setEnterAnim] = useState('scale');
+      const [specialEffect, setSpecialEffect] = useState('sparkles');
       const [displayMode, setDisplayMode] = useState('traditional'); 
       const [customImageUrl, setCustomImageUrl] = useState('');
       const [isSaved, setIsSaved] = useState(false);
@@ -224,19 +179,22 @@
 
       const [isRecipientView, setIsRecipientView] = useState(false);
       const [envelopeOpened, setEnvelopeOpened] = useState(false);
+      const [isRipped, setIsRipped] = useState(false);
+      const [shakeCount, setShakeCount] = useState(0);
       const [currentSlide, setCurrentSlide] = useState(0);
+      const [slideInProp, setSlideInProp] = useState(true);
       const [revealedChars, setRevealedChars] = useState(0);
 
       const [isTranslating, setIsTranslating] = useState(false);
       const [targetLang, setTargetLang] = useState('en');
 
       const [isSpeaking, setIsSpeaking] = useState(false);
-      const [voiceGender, setVoiceGender] = useState('female'); // Estado para controle de gênero da voz
+      const [voiceGender, setVoiceGender] = useState('male'); 
       const [toast, setToast] = useState({ show: false, message: '' });
       const [copySuccess, setCopySuccess] = useState(false);
       
       const canvasRef = useRef(null);
-      const fileInputRef = useRef(null);
+      const mediaInputRef = useRef(null);
       const audioBackgroundRef = useRef(new Audio());
 
       const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -244,34 +202,24 @@
 
       useEffect(() => {
         audioBackgroundRef.current.loop = true;
-        return () => {
-          audioBackgroundRef.current.pause();
-        };
+        return () => audioBackgroundRef.current.pause();
       }, []);
 
-      // Sintetizador nativo de efeito sonoro de papel/abertura de envelope
       const playEnvelopeSound = () => {
         try {
           const AudioContext = window.AudioContext || window.webkitAudioContext;
           if (!AudioContext) return;
           const ctx = new AudioContext();
-          
-          // Gerador de Ruído Rosa/Branco para simular papel rasgando/abrindo
           const bufferSize = ctx.sampleRate * 0.4; 
           const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
           const data = buffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
-          }
+          for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
 
           const noise = ctx.createBufferSource();
           noise.buffer = buffer;
-
           const filter = ctx.createBiquadFilter();
           filter.type = 'bandpass';
           filter.frequency.setValueAtTime(1000, ctx.currentTime);
-          filter.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.3);
-
           const gain = ctx.createGain();
           gain.gain.setValueAtTime(0.3, ctx.currentTime);
           gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
@@ -279,85 +227,41 @@
           noise.connect(filter);
           filter.connect(gain);
           gain.connect(ctx.destination);
-
           noise.start();
-        } catch (e) {
-          console.warn("AudioContext bloqueado pelo navegador até a interação direta.");
-        }
+        } catch (e) {}
       };
 
       const handleEnvelopeOpenClick = () => {
         playEnvelopeSound();
-        setEnvelopeOpened(true);
+        if (openMethod === 'rip') {
+          setIsRipped(true);
+          setTimeout(() => setEnvelopeOpened(true), 600);
+        } else if (openMethod === 'shake') {
+          setShakeCount(prev => {
+            if (prev >= 3) {
+              setTimeout(() => setEnvelopeOpened(true), 400);
+              return 4;
+            }
+            return prev + 1;
+          });
+        } else {
+          setEnvelopeOpened(true);
+        }
       };
 
-      const handleAudioUpload = (e) => {
+      const handleMediaUpload = (e) => {
         const file = e.target.files[0];
         if (file) {
-          setAudioFileName(file.name);
-          const url = URL.createObjectURL(file);
-          audioBackgroundRef.current.src = url;
-          audioBackgroundRef.current.play()
-            .then(() => {
-              setIsPlayingAudio(true);
-              showToast('Música carregada e tocando!');
-            })
-            .catch(() => {
-              showToast('Erro ao reproduzir arquivo.');
-            });
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            setCustomImageUrl(reader.result);
+            showToast('Mídia adicionada com sucesso do dispositivo!');
+          };
+          reader.readAsDataURL(file);
         }
       };
 
-      const toggleAudioPlay = () => {
-        if (!audioBackgroundRef.current.src) {
-          fileInputRef.current.click();
-          return;
-        }
-        if (isPlayingAudio) {
-          audioBackgroundRef.current.pause();
-          setIsPlayingAudio(false);
-          showToast('Música pausada.');
-        } else {
-          audioBackgroundRef.current.play();
-          setIsPlayingAudio(true);
-          showToast('Música retomada.');
-        }
-      };
-
-      // --- AUTENTICAÇÃO ANÔNIMA ---
-      useEffect(() => {
-        if (!auth) {
-          setLoadingAuth(false);
-          return;
-        }
-        auth.signInAnonymously()
-          .catch(err => console.error("Erro na autenticação:", err))
-          .finally(() => setLoadingAuth(false));
-
-        const unsubscribe = auth.onAuthStateChanged((usr) => {
-          setUser(usr);
-        });
-        return () => unsubscribe();
-      }, []);
-
-      useEffect(() => {
-        if (user) fetchUserLetters();
-      }, [user]);
-
-      useEffect(() => {
-        const handleHashChange = () => {
-          const hash = window.location.hash;
-          if (hash.startsWith('#/letter/')) {
-            const id = hash.replace('#/letter/', '');
-            loadLetterFromDb(id);
-          }
-        };
-        window.addEventListener('hashchange', handleHashChange);
-        handleHashChange();
-        return () => window.removeEventListener('hashchange', handleHashChange);
-      }, []);
-
-      // --- CANVAS DE PARTÍCULAS ---
+      // --- CANVAS DE EFEITOS ESPECIAIS ---
       useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -372,16 +276,18 @@
         resizeCanvas();
 
         let particles = [];
-        for (let i = 0; i < 45; i++) {
+        const currentConfig = SPECIAL_EFFECTS.find(e => e.id === specialEffect) || SPECIAL_EFFECTS[0];
+
+        for (let i = 0; i < 50; i++) {
           particles.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height + canvas.height,
             size: Math.random() * 8 + 4,
-            speedY: -(Math.random() * 1.5 + 0.5),
-            speedX: Math.random() * 1 - 0.5,
-            opacity: Math.random() * 0.5 + 0.2,
+            speedY: -(Math.random() * 1.8 + 0.6),
+            speedX: Math.random() * 1.4 - 0.7,
+            opacity: Math.random() * 0.6 + 0.3,
             wobble: Math.random() * 100,
-            wobbleSpeed: Math.random() * 0.02 + 0.01
+            wobbleSpeed: Math.random() * 0.03 + 0.01
           });
         }
 
@@ -389,7 +295,7 @@
           ctx.clearRect(0, 0, canvas.width, canvas.height);
           particles.forEach((p) => {
             p.y += p.speedY;
-            p.x += p.speedX + Math.sin(p.wobble) * 0.5;
+            p.x += p.speedX + Math.sin(p.wobble) * 0.4;
             p.wobble += p.wobbleSpeed;
 
             if (p.y < -20) {
@@ -399,11 +305,11 @@
 
             ctx.save();
             ctx.globalAlpha = p.opacity;
-            ctx.fillStyle = selectedTheme.particleColor;
+            ctx.fillStyle = currentConfig.color;
 
-            if (selectedTheme.id === 'romantic' || selectedTheme.id === 'sunset') {
+            if (specialEffect === 'explosions') {
               ctx.beginPath();
-              const d = p.size;
+              const d = p.size * 1.2;
               ctx.moveTo(p.x, p.y + d / 4);
               ctx.quadraticCurveTo(p.x, p.y, p.x + d / 2, p.y);
               ctx.quadraticCurveTo(p.x + d, p.y, p.x + d, p.y + d / 3);
@@ -412,21 +318,20 @@
               ctx.quadraticCurveTo(p.x, p.y, p.x, p.y + d / 4);
               ctx.closePath();
               ctx.fill();
-            } else if (selectedTheme.id === 'galaxy' || selectedTheme.id === 'cyberpunk' || selectedTheme.id === 'royal') {
+            } else if (specialEffect === 'flowers') {
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.size / 1.5, 0, Math.PI * 2);
+              ctx.arc(p.x + p.size/2, p.y, p.size / 2, 0, Math.PI * 2);
+              ctx.arc(p.x - p.size/2, p.y, p.size / 2, 0, Math.PI * 2);
+              ctx.fill();
+            } else {
               ctx.beginPath();
               ctx.moveTo(p.x, p.y - p.size);
               ctx.lineTo(p.x + p.size/3, p.y - p.size/3);
               ctx.lineTo(p.x + p.size, p.y);
               ctx.lineTo(p.x + p.size/3, p.y + p.size/3);
               ctx.lineTo(p.x, p.y + p.size);
-              ctx.lineTo(p.x - p.size/3, p.y + p.size/3);
-              ctx.lineTo(p.x - p.size, p.y);
-              ctx.lineTo(p.x - p.size/3, p.y - p.size/3);
               ctx.closePath();
-              ctx.fill();
-            } else {
-              ctx.beginPath();
-              ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
               ctx.fill();
             }
             ctx.restore();
@@ -439,7 +344,7 @@
           cancelAnimationFrame(animationFrameId);
           window.removeEventListener('resize', resizeCanvas);
         };
-      }, [selectedTheme]);
+      }, [specialEffect]);
 
       // --- REVELAÇÃO GRADUAL ---
       useEffect(() => {
@@ -458,115 +363,7 @@
         }
       }, [displayMode, envelopeOpened, letterContent]);
 
-      // --- FIRESTORE ---
-      const fetchUserLetters = async () => {
-        if (!db || !user) return;
-        try {
-          const snap = await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').get();
-          const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          setUserLetters(list);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-
-      const saveLetter = async () => {
-        if (!db || !user) {
-          showToast('Banco de dados desconfigurado temporariamente.');
-          return;
-        }
-        if (!letterContent.trim()) {
-          showToast('Escreva sua mensagem antes de salvar.');
-          return;
-        }
-        try {
-          const data = {
-            senderName,
-            receiverName,
-            letterContent,
-            themeId: selectedTheme.id,
-            font: selectedFont,
-            displayMode,
-            customImageUrl,
-            createdAt: new Date().toISOString()
-          };
-
-          const publicRef = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').add(data);
-          await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').doc(publicRef.id).set(data);
-
-          setCurrentLetterId(publicRef.id);
-          setIsSaved(true);
-          fetchUserLetters();
-          showToast('Carta arquivada online!');
-        } catch (err) {
-          console.error(err);
-          showToast('Erro ao salvar no servidor.');
-        }
-      };
-
-      const loadLetterFromDb = async (id) => {
-        if (!db) return;
-        try {
-          const snapshot = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').doc(id).get();
-          if (snapshot.exists) {
-            const data = snapshot.data();
-            setSenderName(data.senderName || '');
-            setReceiverName(data.receiverName || '');
-            setLetterContent(data.letterContent || '');
-            setSelectedTheme(THEMES.find(t => t.id === data.themeId) || THEMES[0]);
-            setSelectedFont(data.font || 'font-serif');
-            setDisplayMode(data.displayMode || 'traditional');
-            setCustomImageUrl(data.customImageUrl || '');
-            setIsRecipientView(true);
-            setEnvelopeOpened(false);
-            showToast('Carta importada!');
-          }
-        } catch (err) {
-          showToast('Erro ao baixar os dados.');
-        }
-      };
-
-      const fetchWithBackoff = async (url, payload, retries = 3, delay = 1000) => {
-        for (let i = 0; i < retries; i++) {
-          try {
-            const response = await fetch(url, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
-            });
-            if (response.ok) return await response.json();
-          } catch (err) {
-            if (i === retries - 1) throw err;
-          }
-          await new Promise(res => setTimeout(res, delay));
-          delay *= 2;
-        }
-        throw new Error('Falha na requisição.');
-      };
-
-      const handleTranslateAI = async () => {
-        if (!letterContent.trim() || !apiKey) {
-          showToast('Escreva algo na carta para traduzir.');
-          return;
-        }
-        setIsTranslating(true);
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-          const payload = {
-            contents: [{ parts: [{ text: letterContent }] }],
-            systemInstruction: { parts: [{ text: `Traduza perfeitamente o texto mantendo toda a poesia e sentimentos originais para o idioma destino: "${targetLang}". Retorne somente o texto puro traduzido.` }] }
-          };
-          const result = await fetchWithBackoff(url, payload);
-          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) setLetterContent(text.trim());
-        } catch (err) {
-          showToast('Erro ao traduzir.');
-        } finally {
-          setIsTranslating(false);
-        }
-      };
-
-      // --- NARRADOR SELETOR VOZ MASCULINA / FEMININA ---
+      // --- CORREÇÃO E ATUALIZAÇÃO SINTETIZADOR DE VOZ MASCULINA ---
       const speakLetterAI = () => {
         if (!letterContent.trim()) {
           showToast('Sem texto para narrar.');
@@ -579,24 +376,27 @@
         }
         
         const utterance = new SpeechSynthesisUtterance(letterContent);
-        // Define o idioma correto
         utterance.lang = targetLang === 'en' ? 'en-US' : (targetLang === 'es' ? 'es-ES' : (targetLang === 'fr' ? 'fr-FR' : 'pt-BR'));
         
-        // Pega as vozes do sistema operacional/navegador para aplicar o gênero filtrado
         const voices = window.speechSynthesis.getVoices();
         let targetVoice = null;
 
-        if (voiceGender === 'female') {
-          targetVoice = voices.find(v => v.lang.includes(utterance.lang) && (v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('maria') || v.name.toLowerCase().includes('luciana') || v.name.toLowerCase().includes('zira') || v.name.toLowerCase().includes('female')));
+        if (voiceGender === 'male') {
+          // Procura ativamente por indexações masculinas comuns nos motores de TTS
+          targetVoice = voices.find(v => v.lang.includes(utterance.lang) && 
+            (v.name.toLowerCase().includes('daniel') || 
+             v.name.toLowerCase().includes('guy') || 
+             v.name.toLowerCase().includes('male') || 
+             v.name.toLowerCase().includes('google') && !v.name.toLowerCase().includes('maria')));
         } else {
-          targetVoice = voices.find(v => v.lang.includes(utterance.lang) && (v.name.toLowerCase().includes('daniel') || v.name.toLowerCase().includes('antonio') || v.name.toLowerCase().includes('male') || v.name.toLowerCase().includes('guy')));
+          targetVoice = voices.find(v => v.lang.includes(utterance.lang) && 
+            (v.name.toLowerCase().includes('maria') || 
+             v.name.toLowerCase().includes('luciana') || 
+             v.name.toLowerCase().includes('female') || 
+             v.name.toLowerCase().includes('zira')));
         }
 
-        // Caso não ache específico, pega a primeira disponível do idioma
-        if (!targetVoice) {
-          targetVoice = voices.find(v => v.lang.includes(utterance.lang));
-        }
-
+        if (!targetVoice) targetVoice = voices.find(v => v.lang.includes(utterance.lang));
         if (targetVoice) utterance.voice = targetVoice;
 
         utterance.onend = () => setIsSpeaking(false);
@@ -605,45 +405,27 @@
         window.speechSynthesis.speak(utterance);
       };
 
-      const downloadInteractiveCard = () => {
-        if (!letterContent) return;
-        const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="UTF-8">
-          <script src="https://cdn.tailwindcss.com"><\/script>
-          <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Playfair+Display&family=Plus+Jakarta+Sans&family=Cinzel&family=Sacramento&family=Montserrat&family=Caveat&display=swap" rel="stylesheet">
-          <style>
-            .font-serif { font-family: 'Playfair Display', Georgia, serif; }
-            .font-mono { font-family: 'JetBrains Mono', Courier, monospace; }
-            .font-sans { font-family: 'Plus Jakarta Sans', sans-serif; }
-            .font-cinzel { font-family: 'Cinzel', serif; }
-            .font-sacramento { font-family: 'Sacramento', cursive; }
-            .font-montserrat { font-family: 'Montserrat', sans-serif; }
-            .font-caveat { font-family: 'Caveat', cursive; }
-          </style>
-        </head>
-        <body class="${selectedTheme.bgClass} flex items-center justify-center min-h-screen p-4">
-          <div class="max-w-xl w-full ${selectedTheme.cardStyle} p-8 text-center">
-            <h2 class="text-2xl font-bold mb-4">Para: ${receiverName || 'Especial'}</h2>
-            ${customImageUrl ? `<img src="${customImageUrl}" class="w-full max-h-48 object-cover rounded-xl mb-4"/>` : ''}
-            <p class="${selectedFont} text-lg leading-relaxed whitespace-pre-line">${letterContent}</p>
-            <p class="mt-4 italic opacity-60">De: ${senderName || 'Anônimo'}</p>
-          </div>
-        </body>
-        </html>`;
-        const element = document.createElement("a");
-        element.href = URL.createObjectURL(new Blob([htmlContent], { type: 'text/html' }));
-        element.download = `Correio_Elegante_${receiverName || 'Especial'}.html`;
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+      const saveLetter = async () => {
+        if (!db || !user) {
+          setCurrentLetterId('mock-id-' + Math.floor(Math.random() * 10000));
+          setIsSaved(true);
+          showToast('Link de compartilhamento ativado (Modo de Demonstração)!');
+          return;
+        }
+        try {
+          const data = { senderName, receiverName, letterContent, themeId: selectedTheme.id, font: selectedFont, cardColor, openMethod, enterAnim, specialEffect, displayMode, customImageUrl, createdAt: new Date().toISOString() };
+          const publicRef = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').add(data);
+          setCurrentLetterId(publicRef.id);
+          setIsSaved(true);
+          showToast('Carta arquivada na nuvem!');
+        } catch (err) {
+          showToast('Erro ao salvar no servidor.');
+        }
       };
 
       const copyShareLink = () => {
-        if (!currentLetterId) return;
-        const link = `${window.location.origin}${window.location.pathname}#/letter/${currentLetterId}`;
+        const pathId = currentLetterId || 'demo';
+        const link = `${window.location.origin}${window.location.pathname}?id=${pathId}`;
         navigator.clipboard.writeText(link)
           .then(() => {
             setCopySuccess(true);
@@ -660,16 +442,21 @@
 
       const getSlides = () => letterContent.split('\n\n').filter(p => p.trim() !== '');
 
-      // Atualiza lista de vozes disponíveis ao carregar
-      useEffect(() => {
-        if (typeof window !== 'undefined' && window.speechSynthesis) {
-          window.speechSynthesis.getVoices();
-        }
-      }, []);
+      const changeSlide = (direction) => {
+        setSlideInProp(false);
+        setTimeout(() => {
+          if (direction === 'next') {
+            setCurrentSlide(p => Math.min(getSlides().length - 1, p + 1));
+          } else {
+            setCurrentSlide(p => Math.max(0, p - 1));
+          }
+          setSlideInProp(true);
+        }, 200);
+      };
 
       return (
         <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
-          <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
+          <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-40" />
           <div className={`fixed inset-0 -z-10 transition-all duration-1000 ${selectedTheme.bgClass}`} />
 
           {toast.show && (
@@ -683,29 +470,12 @@
               <div className="bg-white/20 p-2 rounded-xl"><Heart className="w-6 h-6 text-rose-500 fill-rose-500 animate-pulse" /></div>
               <div>
                 <h1 className="font-extrabold text-lg tracking-wider">L&B Correio Elegante</h1>
-                <p className="text-xs opacity-75">Crie mensagens que encantam corações</p>
+                <p className="text-xs opacity-75">Mensagens Interativas</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleAudioUpload} 
-                accept="audio/*" 
-                className="hidden" 
-              />
-              <button 
-                onClick={toggleAudioPlay} 
-                className="bg-white/20 hover:bg-white/30 p-2.5 rounded-full text-white transition flex items-center gap-1.5 text-xs font-semibold max-w-xs"
-                title={audioFileName || "Fazer upload de música"}
-              >
-                {isPlayingAudio ? <Volume2 /> : <VolumeX />}
-                <span className="truncate max-w-[120px]">
-                  {audioFileName ? (isPlayingAudio ? 'Pausar' : 'Tocar Ambiência') : 'Adicionar Fundo Musical'}
-                </span>
-              </button>
               {isRecipientView && (
-                <button onClick={() => { setIsRecipientView(false); setIsSpeaking(false); window.speechSynthesis.cancel(); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
+                <button onClick={() => { setIsRecipientView(false); setEnvelopeOpened(false); setIsRipped(false); setShakeCount(0); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
                   <Settings /> Voltar ao Editor
                 </button>
               )}
@@ -715,31 +485,44 @@
           {isRecipientView ? (
             <main className="relative z-10 flex-grow flex items-center justify-center p-4">
               {!envelopeOpened ? (
-                <div onClick={handleEnvelopeOpenClick} className="group cursor-pointer relative max-w-lg w-full aspect-[4/3] bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl shadow-2xl p-6 border-4 border-amber-200 flex flex-col justify-between items-center transition-transform hover:scale-105 duration-300">
+                <div 
+                  onClick={handleEnvelopeOpenClick} 
+                  className={`group cursor-pointer relative max-w-lg w-full aspect-[4/3] bg-amber-100 rounded-3xl shadow-2xl p-6 border-4 border-amber-200 flex flex-col justify-between items-center transition-all duration-500
+                    ${openMethod === 'shake' && shakeCount > 0 && shakeCount < 4 ? 'animate-shake' : ''}
+                    ${openMethod === 'rip' && isRipped ? 'scale-95 opacity-0 rotate-12' : ''}
+                    ${openMethod === 'slide' && envelopeOpened ? '-translate-y-full opacity-0' : ''}
+                  `}
+                >
                   <div className="absolute top-0 inset-x-0 h-1/2 bg-amber-200/50 rounded-b-[100px] shadow-inner flex justify-center items-start pt-4">
                     <div className="bg-rose-500 p-3 rounded-full text-white shadow-lg"><Heart className="w-8 h-8 fill-white text-white" /></div>
                   </div>
                   <div className="mt-28 text-center">
-                    <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">Mensagem Especial Recebida</span>
+                    <span className="text-xs uppercase tracking-widest text-amber-800 font-semibold">Método: {OPEN_METHODS.find(m => m.id === openMethod)?.name}</span>
                     <h3 className="text-2xl font-serif mt-2 text-stone-800">Para: <span className="font-extrabold underline">{receiverName || 'Alguém Especial'}</span></h3>
                   </div>
-                  <div className="text-center text-xs text-amber-700/80 font-medium flex items-center gap-1 animate-bounce">Clique para abrir o envelope <ChevronRight /></div>
+                  <div className="text-center text-xs text-amber-700/80 font-medium animate-bounce">
+                    {openMethod === 'rip' && 'Toque para Rasgar o envelope ✉️'}
+                    {openMethod === 'shake' && `Toque para sacudir (${shakeCount}/3) 📳`}
+                    {openMethod === 'slide' && 'Toque para a carta sair 📄'}
+                  </div>
                 </div>
               ) : (
-                <div className={`max-w-2xl w-full ${selectedTheme.cardStyle} p-6 md:p-10 relative`}>
+                <div 
+                  className={`max-w-2xl w-full ${cardColor} p-6 md:p-10 relative border shadow-2xl transition-all rounded-3xl
+                    ${enterAnim === 'scale' ? 'scale-100 tracking-normal duration-700' : ''}
+                    ${enterAnim === 'fade-up' ? 'translate-y-0 opacity-100 duration-1000' : ''}
+                    ${enterAnim === 'rotate' ? 'rotate-0 scale-100 duration-700' : ''}
+                  `}
+                >
                   <div className="absolute -top-12 right-0 flex gap-2 items-center">
-                    
-                    {/* Seletor de voz Masculina / Feminina */}
                     <div className="bg-slate-900 text-white rounded-xl p-1 flex items-center gap-1 shadow-lg text-xs">
                       <button onClick={() => setVoiceGender('female')} className={`px-2 py-1 rounded-lg font-bold transition ${voiceGender === 'female' ? 'bg-rose-500 text-white' : 'opacity-60'}`}>♀️ Fem</button>
                       <button onClick={() => setVoiceGender('male')} className={`px-2 py-1 rounded-lg font-bold transition ${voiceGender === 'male' ? 'bg-blue-500 text-white' : 'opacity-60'}`}>♂️ Masc</button>
                     </div>
 
                     <button onClick={speakLetterAI} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                      {isSpeaking ? <Pause /> : <Play />}
-                      {isSpeaking ? 'Pausar' : 'Narrar Voz'}
+                      {isSpeaking ? <Pause /> : <Play />} {isSpeaking ? 'Pausar' : 'Narrar Voz'}
                     </button>
-                    <button onClick={downloadInteractiveCard} className="bg-white text-slate-800 border px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg"><Download /> Baixar HTML</button>
                   </div>
 
                   <div className="border-b border-current/20 pb-4 mb-6 flex justify-between items-end">
@@ -747,17 +530,19 @@
                     {senderName && <div className="text-right"><span className="text-xs opacity-70 uppercase">De</span><h4 className="text-lg font-semibold italic">~{senderName}</h4></div>}
                   </div>
 
-                  {customImageUrl && <div className="mb-6 rounded-2xl overflow-hidden shadow-lg"><img src={customImageUrl} className="w-full max-h-64 object-cover" /></div>}
+                  {customImageUrl && <div className="mb-6 rounded-2xl overflow-hidden shadow-lg max-h-60"><img src={customImageUrl} className="w-full h-full object-cover" /></div>}
 
-                  {displayMode === 'traditional' && <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line text-center py-4`}>{letterContent || 'Nenhuma mensagem escrita ainda...'}</div>}
+                  {displayMode === 'traditional' && <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line text-center py-4`}>{letterContent || 'Nenhuma mensagem escrita...'}</div>}
 
                   {displayMode === 'slides' && (
                     <div className="min-h-[200px] flex flex-col justify-between py-4">
-                      <div className={`text-center ${selectedFont} text-lg md:text-xl leading-relaxed`}>{getSlides()[currentSlide] || 'Nenhum parágrafo separado.'}</div>
+                      <div className={`text-center ${selectedFont} text-lg md:text-xl leading-relaxed transition-opacity duration-200 ${slideInProp ? 'opacity-100' : 'opacity-0'}`}>
+                        {getSlides()[currentSlide] || 'Nenhum parágrafo separado.'}
+                      </div>
                       <div className="flex justify-between items-center mt-6 pt-4 border-t border-current/10">
-                        <button disabled={currentSlide === 0} onClick={() => setCurrentSlide(p => Math.max(0, p - 1))} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronLeft /></button>
+                        <button disabled={currentSlide === 0} onClick={() => changeSlide('prev')} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronLeft /></button>
                         <span className="text-xs font-semibold">Slide {currentSlide + 1} de {getSlides().length}</span>
-                        <button disabled={currentSlide >= getSlides().length - 1} onClick={() => setCurrentSlide(p => Math.min(getSlides().length - 1, p + 1))} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronRight /></button>
+                        <button disabled={currentSlide >= getSlides().length - 1} onClick={() => changeSlide('next')} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronRight /></button>
                       </div>
                     </div>
                   )}
@@ -776,102 +561,99 @@
                 <div className="border-b pb-4 flex justify-between items-center">
                   <div>
                     <h3 className="text-xl font-bold text-slate-800">Escreva sua Mensagem</h3>
-                    <p className="text-xs text-slate-500">Personalize cada detalhe da sua declaração</p>
+                    <p className="text-xs text-slate-500">Personalize sua declaração interativa</p>
                   </div>
-                  <button onClick={() => setIsRecipientView(true)} className="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"><Eye /> Visualizar</button>
+                  <button onClick={() => setIsRecipientView(true)} className="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"><Eye /> Visualizar Papelaria</button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Para:</label>
-                    <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Nome do destinatário" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
+                    <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Nome do destinatário" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:outline-none" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase text-slate-500 mb-1">De:</label>
-                    <input type="text" value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Em branco para Anônimo" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
+                    <input type="text" value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Em branco para Anônimo" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:outline-none" />
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-1">
-                    <label className="block text-xs font-bold uppercase text-slate-500">Mensagem da Carta:</label>
-                    <div className="flex items-center gap-1.5">
-                      <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)} className="bg-slate-100 text-[10px] rounded p-1">
-                        <option value="en">🇺🇸 Inglês</option>
-                        <option value="es">🇪🇸 Espanhol</option>
-                        <option value="fr">🇫🇷 Francês</option>
-                      </select>
-                      <button onClick={handleTranslateAI} disabled={isTranslating} className="bg-slate-800 text-white px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
-                        {isTranslating ? <Loader2 /> : <Languages />} Traduzir
-                      </button>
-                    </div>
+                    <label className="block text-xs font-bold uppercase text-slate-500">Mensagem (Separe com 2 Enters para Slides):</label>
+                    <button onClick={handleTranslateAI} disabled={isTranslating} className="bg-slate-800 text-white px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1">
+                      <Languages /> Traduzir para {targetLang.toUpperCase()}
+                    </button>
                   </div>
-                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); }} rows={6} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-serif leading-relaxed" />
+                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); }} rows={5} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:outline-none font-serif leading-relaxed" />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Link de Imagem ou GIF Decorativo:</label>
-                  <input type="text" value={customImageUrl} onChange={(e) => setCustomImageUrl(e.target.value)} placeholder="https://..." className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-xs focus:outline-none" />
+                  <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Anexar Mídia do Dispositivo:</label>
+                  <div className="flex items-center gap-3">
+                    <button onClick={() => mediaInputRef.current.click()} className="bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl border transition">
+                      📁 Escolher Arquivo de Imagem
+                    </button>
+                    <input type="file" ref={mediaInputRef} onChange={handleMediaUpload} accept="image/*" className="hidden" />
+                    {customImageUrl && <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">✓ Carregada com Sucesso</span>}
+                  </div>
                 </div>
 
                 <div className="border-t pt-4 flex flex-col sm:flex-row gap-3">
-                  <button onClick={saveLetter} className="flex-grow bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-md"><Check /> Salvar Carta Online</button>
-                  {isSaved && <button onClick={copyShareLink} className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition">{copySuccess ? <Check /> : <Share2 />} {copySuccess ? 'Copiado!' : 'Copiar Link'}</button>}
+                  <button onClick={saveLetter} className="flex-grow bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-md"><Check /> Gerar Link de Entrega</button>
+                  {isSaved && <button onClick={copyShareLink} className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition"><Share2 /> {copySuccess ? 'Copiado!' : 'Copiar Link'}</button>}
                 </div>
               </div>
 
               <div className="lg:col-span-5 flex flex-col gap-6">
-                <div className="bg-white/95 rounded-3xl shadow-xl p-5 border">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><Layers /> Tema e Cores</h3>
-                  <div className="grid grid-cols-1 gap-2">
-                    {THEMES.map((theme) => (
-                      <button key={theme.id} onClick={() => setSelectedTheme(theme)} className={`p-3 rounded-2xl border text-left flex items-center justify-between ${selectedTheme.id === theme.id ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-100'}`}>
-                        <span className="text-xs font-bold text-slate-800">{theme.name}</span>
-                        <div className={`w-6 h-6 rounded-full ${theme.bgClass}`} />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
                 <div className="bg-white/95 rounded-3xl shadow-xl p-5 border space-y-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Tipografia (Fonte):</label>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">🎨 Cor Interna do Papel:</label>
                     <div className="grid grid-cols-2 gap-2">
-                      {FONTS.map(f => <button key={f.id} onClick={() => setSelectedFont(f.id)} className={`py-1.5 text-xs rounded-xl border text-center ${selectedFont === f.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{f.name}</button>)}
+                      {CARD_COLORS.map(c => <button key={c.id} onClick={() => setCardColor(c.id)} className={`py-1.5 text-xs rounded-xl border text-center ${cardColor === c.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{c.name}</button>)}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Formato de Exibição:</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button onClick={() => setDisplayMode('traditional')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'traditional' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>📃 Normal</button>
-                      <button onClick={() => setDisplayMode('slides')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'slides' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>🎴 Slides</button>
-                      <button onClick={() => setDisplayMode('gradual')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'gradual' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>✍️ Tipo</button>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">✉️ Como o destinatário vai abrir:</label>
+                    <div className="grid grid-cols-1 gap-1.5">
+                      {OPEN_METHODS.map(m => <button key={m.id} onClick={() => setOpenMethod(m.id)} className={`py-2 px-3 text-left text-xs rounded-xl border ${openMethod === m.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>🔹 {m.name}</button>)}
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-white/95 rounded-3xl shadow-xl p-5 border">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><FileText /> Minhas Cartas Recentes</h3>
-                  {userLetters.length === 0 ? (
-                    <p className="text-xs text-slate-400 italic text-center py-2">Nenhuma carta arquivada.</p>
-                  ) : (
-                    <div className="max-h-40 overflow-y-auto space-y-2">
-                      {userLetters.map(l => (
-                        <div key={l.id} className="p-2.5 bg-slate-50 rounded-xl flex items-center justify-between border text-xs">
-                          <span className="truncate font-bold text-slate-700">Para: {l.receiverName || 'Alguém'}</span>
-                          <button onClick={() => loadLetterFromDb(l.id)} className="bg-rose-500 text-white p-1 rounded-lg"><Eye /></button>
-                        </div>
-                      ))}
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">✨ Efeitos Especiais Flutuantes:</label>
+                    <div className="grid grid-cols-1 gap-1.5">
+                      {SPECIAL_EFFECTS.map(e => <button key={e.id} onClick={() => setSpecialEffect(e.id)} className={`py-2 px-3 text-left text-xs rounded-xl border ${specialEffect === e.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{e.name}</button>)}
                     </div>
-                  )}
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">🎬 Animação de Entrada do Papel:</label>
+                    <div className="grid grid-cols-3 gap-1">
+                      {ENTER_ANIMATIONS.map(a => <button key={a.id} onClick={() => setEnterAnim(a.id)} className={`py-1.5 text-[10px] rounded-lg border text-center ${enterAnim === a.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{a.name}</button>)}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Tipografia & Modo:</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      <select value={selectedFont} onChange={(e) => setSelectedFont(e.target.value)} className="bg-slate-50 border rounded-xl p-2 text-xs">
+                        {FONTS.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
+                      </select>
+                      <select value={displayMode} onChange={(e) => setDisplayMode(e.target.value)} className="bg-slate-50 border rounded-xl p-2 text-xs">
+                        <option value="traditional">📃 Tradicional</option>
+                        <option value="slides">🎴 Modo Slides</option>
+                        <option value="gradual">✍️ Máquina Gradual</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
               </div>
             </main>
           )}
 
           <footer className="relative z-10 py-4 text-center text-xs text-white/70 bg-black/15 mt-8 backdrop-blur-sm">
-            <p>© 2026 Love&Bond Correio Elegante - Feito para espalhar sorrisos.</p>
+            <p>© 2026 Love&Bond Correio Elegante - Feito para espalhar sentimentos.</p>
           </footer>
         </div>
       );
