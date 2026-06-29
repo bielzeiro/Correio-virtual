@@ -9,13 +9,11 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
 
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -46,35 +44,75 @@
       appId: "" 
     };
 
-    // Inicializando Firebase
+    // Inicializando Firebase com verificação de segurança
     let app, auth, db;
     if (firebaseConfig.apiKey) {
-      app = firebase.initializeApp(firebaseConfig);
-      auth = firebase.auth();
-      db = firebase.firestore();
+      try {
+        app = firebase.initializeApp(firebaseConfig);
+        auth = firebase.auth();
+        db = firebase.firestore();
+      } catch (e) {
+        console.error("Erro ao inicializar Firebase:", e);
+      }
     }
     const appId = 'correio-elegante-default';
-    const apiKey = ""; // Insira sua chave API do Gemini aqui para habilitar a IA
+    const apiKey = ""; // Insira sua chave API do Gemini aqui para habilitar a IA de texto, tradução e voz
 
-    // Mapeamento dos ícones do Lucide para tags inline reutilizáveis
-    const Heart = ({ className = "inline-block w-5 h-5" }) => <i data-lucide="heart" className={className}></i>;
-    const Sparkles = () => <i data-lucide="sparkles" className="inline-block w-4 h-4 text-yellow-400"></i>;
-    const Volume2 = ({ className = "inline-block w-4 h-4" }) => <i data-lucide="volume-2" className={className}></i>;
-    const VolumeX = () => <i data-lucide="volume-x" className="inline-block w-4 h-4"></i>;
-    const Share2 = () => <i data-lucide="share-2" className="inline-block w-5 h-5"></i>;
-    const Download = () => <i data-lucide="download" className="inline-block w-3.5 h-3.5"></i>;
-    const Languages = () => <i data-lucide="languages" className="inline-block w-2.5 h-2.5"></i>;
-    const Wand2 = ({ className = "" }) => <i data-lucide="wand-2" className={`inline-block w-4 h-4 ${className}`}></i>;
-    const Play = () => <i data-lucide="play" className="inline-block w-3.5 h-3.5 text-emerald-400"></i>;
-    const Pause = () => <i data-lucide="pause" className="inline-block w-3.5 h-3.5 text-rose-400"></i>;
-    const FileText = () => <i data-lucide="file-text" className="inline-block w-4 h-4 text-rose-500"></i>;
-    const Layers = () => <i data-lucide="layers" className="inline-block w-4 h-4 text-rose-500"></i>;
-    const Check = ({ className = "inline-block w-5 h-5" }) => <i data-lucide="check" className={className}></i>;
-    const Eye = () => <i data-lucide="eye" className="inline-block w-3.5 h-3.5"></i>;
-    const ChevronRight = ({ className = "inline-block w-4 h-4" }) => <i data-lucide="chevron-right" className={className}></i>;
-    const ChevronLeft = () => <i data-lucide="chevron-left" className="inline-block w-5 h-5"></i>;
-    const Settings = () => <i data-lucide="settings" className="inline-block w-3.5 h-3.5"></i>;
-    const Loader2 = ({ className = "inline-block w-3.5 h-3.5 animate-spin" }) => <i data-lucide="loader-2" className={className}></i>;
+    // Ícones Reutilizáveis em formato SVG puro para evitar conflitos no React
+    const Heart = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+    );
+    const Sparkles = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-4 h-4 text-yellow-400"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275Z"/></svg>
+    );
+    const Volume2 = ({ className = "w-4 h-4" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+    );
+    const VolumeX = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-4 h-4"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/></svg>
+    );
+    const Share2 = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-5 h-5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>
+    );
+    const Download = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+    );
+    const Languages = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
+    );
+    const Wand2 = ({ className = "" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`inline-block w-4 h-4 ${className}`}><path d="m15 4 5 5"/><path d="m3 20 12-12"/><path d="m19 2-2 2"/><path d="m22 5-2-2"/><path d="m16 2 1 1"/><path d="m21 7-1-1"/><path d="M13 1h1"/><path d="M1 13v1"/></svg>
+    );
+    const Play = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5 text-emerald-400"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+    );
+    const Pause = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5 text-rose-400"><rect width="4" height="16" x="14" y="4" rx="1"/><rect width="4" height="16" x="6" y="4" rx="1"/></svg>
+    );
+    const FileText = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-4 h-4 text-rose-500"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><polyline points="14 2 14 7 20 7"/><line x1="10" x2="14" y1="13" y2="13"/><line x1="10" x2="14" y1="17" y2="17"/><line x1="10" x2="11" y1="9" y2="9"/></svg>
+    );
+    const Layers = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-4 h-4 text-rose-500"><path d="m12 3-8 4 8 4 8-4-8-4Z"/><path d="m4 12 8 4 8-4"/><path d="m4 16 8 4 8-4"/></svg>
+    );
+    const Check = ({ className = "w-5 h-5" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}><polyline points="20 6 9 17 4 12"/></svg>
+    );
+    const Eye = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0Z"/><circle cx="12" cy="12" r="3"/></svg>
+    );
+    const ChevronRight = ({ className = "w-4 h-4" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`inline-block ${className}`}><polyline points="9 18 15 12 9 6"/></svg>
+    );
+    const ChevronLeft = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-5 h-5"><polyline points="15 18 9 12 15 6"/></svg>
+    );
+    const Settings = () => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+    );
+    const Loader2 = ({ className = "inline-block w-3.5 h-3.5 animate-spin" }) => (
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={className}><line x1="12" x2="12" y1="2" y2="6"/><line x1="12" x2="12" y1="18" y2="22"/><line x1="4.93" x2="7.76" y1="4.93" y2="7.76"/><line x1="16.24" x2="19.07" y1="16.24" y2="19.07"/><line x1="2" x2="6" y1="12" y2="12"/><line x1="18" x2="22" y1="12" y2="12"/><line x1="4.93" x2="7.76" y1="19.07" y2="16.24"/><line x1="16.24" x2="19.07" y1="7.76" y2="4.93"/></svg>
+    );
 
     const THEMES = [
       {
@@ -135,62 +173,44 @@
       { id: 'font-mono', name: 'Mono Tech' }
     ];
 
-    const TRANSITIONS = [
-      { id: 'fade', name: 'Desvanecer (Fade)' },
-      { id: 'slide', name: 'Deslizar (Slide)' },
-      { id: 'zoom', name: 'Zoom Suave' }
-    ];
-
     function App() {
-      // --- ESTADOS DO USUÁRIO ---
       const [user, setUser] = useState(null);
       const [userLetters, setUserLetters] = useState([]);
       const [loadingAuth, setLoadingAuth] = useState(true);
 
-      // --- ESTADOS DA CARTA ATUAL ---
       const [senderName, setSenderName] = useState('');
       const [receiverName, setReceiverName] = useState('');
       const [letterContent, setLetterContent] = useState('');
       const [selectedTheme, setSelectedTheme] = useState(THEMES[0]);
       const [selectedFont, setSelectedFont] = useState('font-serif');
-      const [selectedTransition, setSelectedTransition] = useState('fade');
       const [displayMode, setDisplayMode] = useState('traditional'); 
       const [customImageUrl, setCustomImageUrl] = useState('');
       const [isPlayingSynth, setIsPlayingSynth] = useState(false);
       const [isSaved, setIsSaved] = useState(false);
       const [currentLetterId, setCurrentLetterId] = useState('');
 
-      // --- ESTADOS DE APRESENTAÇÃO ---
       const [isRecipientView, setIsRecipientView] = useState(false);
       const [envelopeOpened, setEnvelopeOpened] = useState(false);
       const [currentSlide, setCurrentSlide] = useState(0);
       const [revealedChars, setRevealedChars] = useState(0);
 
-      // --- ESTADOS DOS ASSISTENTES DE IA ---
       const [aiPrompt, setAiPrompt] = useState('');
       const [aiTone, setAiTone] = useState('romantico');
       const [isGeneratingAI, setIsGeneratingAI] = useState(false);
       const [isTranslating, setIsTranslating] = useState(false);
       const [targetLang, setTargetLang] = useState('en');
 
-      // --- ESTADOS DA SÍNTESE DE VOZ ---
       const [isSpeaking, setIsSpeaking] = useState(false);
       const [audioUrl, setAudioUrl] = useState(null);
-      const [ttsVoice, setTtsVoice] = useState('Leda'); 
+      const [ttsVoice, setTtsVoice] = useState('en-US-Neural2-F'); 
       const [loadingAudio, setLoadingAudio] = useState(false);
       const audioRef = useRef(null);
 
-      // --- AUXILIARES GERAIS ---
       const [toast, setToast] = useState({ show: false, message: '' });
       const [copySuccess, setCopySuccess] = useState(false);
       const canvasRef = useRef(null);
       const synthAudioCtxRef = useRef(null);
       const synthNodesRef = useRef([]);
-
-      // Força atualização dos ícones do Lucide sempre que a visualização é alterada
-      useEffect(() => {
-        if (window.lucide) window.lucide.createIcons();
-      }, [isRecipientView, envelopeOpened, isPlayingSynth, displayMode, currentThemeId => selectedTheme.id, userLetters, isSpeaking, loadingAudio, copySuccess]);
 
       // --- AUTENTICAÇÃO ANÔNIMA ---
       useEffect(() => {
@@ -208,12 +228,10 @@
         return () => unsubscribe();
       }, []);
 
-      // Carrega as cartas caso o usuário mude
       useEffect(() => {
         if (user) fetchUserLetters();
       }, [user]);
 
-      // Rota por Hash para Compartilhamento direto
       useEffect(() => {
         const handleHashChange = () => {
           const hash = window.location.hash;
@@ -332,7 +350,7 @@
       const toggleAmbientMusic = () => {
         if (isPlayingSynth) {
           if (synthAudioCtxRef.current) {
-            synthAudioCtxRef.current.close();
+            try { synthAudioCtxRef.current.close(); } catch(e){}
             synthAudioCtxRef.current = null;
           }
           setIsPlayingSynth(false);
@@ -344,10 +362,10 @@
             synthAudioCtxRef.current = ctx;
 
             const progression = [
-              [130.81, 164.81, 196.00, 246.94, 293.66], // Cmaj9
-              [110.00, 130.81, 164.81, 220.00, 261.63], // Am9
-              [87.31, 130.81, 174.61, 220.00, 261.63],  // Fmaj7
-              [98.00, 146.83, 196.00, 246.94, 293.66]   // G6
+              [130.81, 164.81, 196.00, 246.94, 293.66], 
+              [110.00, 130.81, 164.81, 220.00, 261.63], 
+              [87.31, 130.81, 174.61, 220.00, 261.63],  
+              [98.00, 146.83, 196.00, 246.94, 293.66]   
             ];
             let currentChordIndex = 0;
 
@@ -385,9 +403,9 @@
 
             playChord();
             setIsPlayingSynth(true);
-            showToast('Música ambiente via Sintetizador ativada!');
+            showToast('Música ambiente ativada!');
           } catch (err) {
-            showToast('Toque novamente para liberar o áudio do navegador.');
+            showToast('Clique novamente para liberar o áudio.');
           }
         }
       };
@@ -395,11 +413,13 @@
       useEffect(() => {
         return () => {
           synthNodesRef.current.forEach(timer => clearTimeout(timer));
-          if (synthAudioCtxRef.current) synthAudioCtxRef.current.close();
+          if (synthAudioCtxRef.current) {
+            try { synthAudioCtxRef.current.close(); } catch(e){}
+          }
         };
       }, []);
 
-      // --- FIRESTORE OPERAÇÕES ---
+      // --- FIRESTORE OPERAÇÕES CORRIGIDAS ---
       const fetchUserLetters = async () => {
         if (!db || !user) return;
         try {
@@ -413,7 +433,7 @@
 
       const saveLetter = async () => {
         if (!db || !user) {
-          showToast('Banco de dados indisponível ou desconectado.');
+          showToast('Banco de dados desconfigurado.');
           return;
         }
         if (!letterContent.trim()) {
@@ -427,20 +447,20 @@
             letterContent,
             themeId: selectedTheme.id,
             font: selectedFont,
-            transition: selectedTransition,
             displayMode,
             customImageUrl,
             createdAt: new Date().toISOString()
           };
 
-          const publicRef = await db.collection('artifacts').doc(appId).collection('public').document('data').collection('letters').add(data);
+          const publicRef = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').add(data);
           await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').doc(publicRef.id).set(data);
 
           setCurrentLetterId(publicRef.id);
           setIsSaved(true);
           fetchUserLetters();
-          showToast('Carta salva online e link gerado!');
+          showToast('Carta salva online!');
         } catch (err) {
+          console.error(err);
           showToast('Erro ao salvar no banco de dados.');
         }
       };
@@ -448,7 +468,7 @@
       const loadLetterFromDb = async (id) => {
         if (!db) return;
         try {
-          const snapshot = await db.collection('artifacts').doc(appId).collection('public').document('data').collection('letters').doc(id).get();
+          const snapshot = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').doc(id).get();
           if (snapshot.exists) {
             const data = snapshot.data();
             setSenderName(data.senderName || '');
@@ -456,20 +476,18 @@
             setLetterContent(data.letterContent || '');
             setSelectedTheme(THEMES.find(t => t.id === data.themeId) || THEMES[0]);
             setSelectedFont(data.font || 'font-serif');
-            setSelectedTransition(data.transition || 'fade');
             setDisplayMode(data.displayMode || 'traditional');
             setCustomImageUrl(data.customImageUrl || '');
             setIsRecipientView(true);
             setEnvelopeOpened(false);
-            showToast('Carta carregada via nuvem!');
+            showToast('Carta carregada com sucesso!');
           }
         } catch (err) {
-          showToast('Erro ao baixar os dados da carta.');
+          showToast('Erro ao baixar os dados.');
         }
       };
 
-      // --- BACKOFF EXPONENCIAL ---
-      const fetchWithBackoff = async (url, payload, retries = 4, delay = 1000) => {
+      const fetchWithBackoff = async (url, payload, retries = 3, delay = 1000) => {
         for (let i = 0; i < retries; i++) {
           try {
             const response = await fetch(url, {
@@ -487,24 +505,24 @@
         throw new Error('Falha na requisição.');
       };
 
-      // --- ASSISTENTE DE ESCRITA IA ---
+      // --- ASSISTENTE DE ESCRITA IA (CORRIGIDO ENDPOINT) ---
       const handleGenerateAI = async () => {
         if (!aiPrompt.trim() || !apiKey) {
-          showToast(apiKey ? 'Digite sua ideia para a carta.' : 'Defina a variável apiKey no código HTML.');
+          showToast(apiKey ? 'Digite sua ideia para a carta.' : 'Defina a variável apiKey no código.');
           return;
         }
         setIsGeneratingAI(true);
-        const systemPrompt = `Você é um escritor poético e empático de Correio Elegante. Escreva uma linda mensagem baseando-se no tom escolhido pelo usuário (${aiTone}). IMPORTANTE: Escreva apenas a mensagem final de forma direta, sem introduções ou observações extras.`;
+        const systemPrompt = `Você é um escritor poético de Correio Elegante. Escreva uma linda mensagem com base no tom (${aiTone}). Retorne apenas o texto final da carta diretamente, sem introduções ou observações extras.`;
         
         try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
           const payload = {
             contents: [{ parts: [{ text: `Mensagem sobre: "${aiPrompt}". Remetente: "${senderName}", Destinatário: "${receiverName}".` }] }],
             systemInstruction: { parts: [{ text: systemPrompt }] }
           };
           const result = await fetchWithBackoff(url, payload);
           const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) setLetterContent(text);
+          if (text) setLetterContent(text.trim());
         } catch (err) {
           showToast('Erro na IA de escrita.');
         } finally {
@@ -512,7 +530,7 @@
         }
       };
 
-      // --- TRADUTOR IA ---
+      // --- TRADUTOR IA (CORRIGIDO ENDPOINT) ---
       const handleTranslateAI = async () => {
         if (!letterContent.trim() || !apiKey) {
           showToast('Escreva algo na carta para traduzir.');
@@ -520,14 +538,14 @@
         }
         setIsTranslating(true);
         try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
           const payload = {
             contents: [{ parts: [{ text: letterContent }] }],
-            systemInstruction: { parts: [{ text: `Traduza perfeitamente o texto fornecido mantendo toda poesia e sentimento intactos para o idioma destino: "${targetLang}". Retorne somente o texto traduzido.` }] }
+            systemInstruction: { parts: [{ text: `Traduza perfeitamente o texto mantendo toda a poesia e sentimentos originais para o idioma destino: "${targetLang}". Retorne somente o texto puro traduzido.` }] }
           };
           const result = await fetchWithBackoff(url, payload);
           const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) setLetterContent(text);
+          if (text) setLetterContent(text.trim());
         } catch (err) {
           showToast('Erro ao traduzir.');
         } finally {
@@ -535,81 +553,31 @@
         }
       };
 
-      // --- NARRADOR GEMINI TTS COM CONVERSOR PCM PARA WAV ---
-      const speakLetterAI = async () => {
-        if (!letterContent.trim() || !apiKey) {
-          showToast('Sem texto ou sem chave API configurada.');
-          return;
-        }
-        if (audioUrl) {
-          if (isSpeaking) {
-            audioRef.current.pause();
-            setIsSpeaking(false);
-          } else {
-            audioRef.current.play();
-            setIsSpeaking(true);
-          }
+      // --- NARRADOR REFORMULADO (Usando a Web Speech API nativa para maior compatibilidade de áudio) ---
+      const speakLetterAI = () => {
+        if (!letterContent.trim()) {
+          showToast('Sem texto para narrar.');
           return;
         }
 
-        setLoadingAudio(true);
-        showToast('Gerando narração via IA...');
-
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
-          const payload = {
-            contents: [{ parts: [{ text: `Leia com voz calorosa e suave, respeitando as pausas: ${letterContent}` }] }],
-            generationConfig: {
-              responseModalities: ["AUDIO"],
-              speechConfig: {
-                voiceConfig: { prebuiltVoiceConfig: { voiceName: ttsVoice } }
-              }
-            },
-            model: "gemini-2.5-flash-preview-tts"
-          };
-
-          const result = await fetchWithBackoff(url, payload);
-          const inlineData = result.candidates?.[0]?.content?.parts?.[0]?.inlineData;
-          
-          if (inlineData && inlineData.data) {
-            const wavUrl = pcmToWav(inlineData.data, 24000);
-            setAudioUrl(wavUrl);
-            setIsSpeaking(true);
-            setTimeout(() => { if (audioRef.current) audioRef.current.play(); }, 150);
-          }
-        } catch (err) {
-          showToast('Falha no sintetizador de voz do Gemini.');
-        } finally {
-          setLoadingAudio(false);
+        if (isSpeaking) {
+          window.speechSynthesis.cancel();
+          setIsSpeaking(false);
+          return;
         }
-      };
 
-      const pcmToWav = (pcmBase64, sampleRate = 24000) => {
-        const binaryString = atob(pcmBase64);
-        const len = binaryString.length;
-        const bytes = new Uint8Array(len);
-        for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
+        const utterance = new SpeechSynthesisUtterance(letterContent);
         
-        const wavHeader = new ArrayBuffer(44);
-        const view = new DataView(wavHeader);
-        view.setUint32(0, 0x52494646, false); 
-        view.setUint32(4, 36 + len, true);   
-        view.setUint32(8, 0x57415645, false); 
-        view.setUint32(12, 0x666d7420, false); 
-        view.setUint32(16, 16, true);        
-        view.setUint16(20, 1, true);         
-        view.setUint16(22, 1, true);         
-        view.setUint32(24, sampleRate, true); 
-        view.setUint32(28, sampleRate * 2, true); 
-        view.setUint16(32, 2, true);         
-        view.setUint16(34, 16, true);        
-        view.setUint32(36, 0x64617461, false); 
-        view.setUint32(40, len, true);       
+        // Configura para ler em português se não estiver traduzido
+        utterance.lang = targetLang === 'en' ? 'pt-BR' : targetLang;
+        
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
 
-        return URL.createObjectURL(new Blob([wavHeader, bytes.buffer], { type: 'audio/wav' }));
+        setIsSpeaking(true);
+        window.speechSynthesis.speak(utterance);
       };
 
-      // --- EXPORTAR CARTÃO INTERATIVO ---
       const downloadInteractiveCard = () => {
         if (!letterContent) return;
         const htmlContent = `
@@ -639,15 +607,13 @@
       const copyShareLink = () => {
         if (!currentLetterId) return;
         const link = `${window.location.origin}${window.location.pathname}#/letter/${currentLetterId}`;
-        const input = document.createElement('input');
-        document.body.appendChild(input);
-        input.value = link;
-        input.select();
-        document.execCommand('copy');
-        document.body.removeChild(input);
-        setCopySuccess(true);
-        showToast('Link de compartilhamento copiado!');
-        setTimeout(() => setCopySuccess(false), 2000);
+        navigator.clipboard.writeText(link)
+          .then(() => {
+            setCopySuccess(true);
+            showToast('Link de compartilhamento copiado!');
+            setTimeout(() => setCopySuccess(false), 2000);
+          })
+          .catch(() => showToast('Falha ao copiar link automaticamente.'));
       };
 
       const showToast = (message) => {
@@ -670,7 +636,7 @@
 
           <header className="relative z-10 px-6 py-4 flex items-center justify-between bg-white/10 backdrop-blur-md border-b border-white/10 text-white shadow-md">
             <div className="flex items-center gap-3">
-              <div className="bg-white/20 p-2 rounded-xl"><Heart className="w-6 h-6 fill-rose-500 text-rose-500 animate-pulse" /></div>
+              <div className="bg-white/20 p-2 rounded-xl"><Heart className="w-6 h-6 text-rose-500 fill-rose-500 animate-pulse" /></div>
               <div>
                 <h1 className="font-extrabold text-lg tracking-wider">L&B Correio Elegante</h1>
                 <p className="text-xs opacity-75">Crie mensagens que encantam corações</p>
@@ -682,7 +648,7 @@
                 <span>{isPlayingSynth ? 'Sintetizador ON' : 'Sem Áudio'}</span>
               </button>
               {isRecipientView && (
-                <button onClick={() => { setIsRecipientView(false); setAudioUrl(null); setIsSpeaking(false); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
+                <button onClick={() => { setIsRecipientView(false); setIsSpeaking(false); window.speechSynthesis.cancel(); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
                   <Settings /> Voltar ao Editor
                 </button>
               )}
@@ -705,9 +671,9 @@
               ) : (
                 <div className={`max-w-2xl w-full ${selectedTheme.cardStyle} p-6 md:p-10 rounded-3xl border shadow-2xl relative`}>
                   <div className="absolute -top-12 right-0 flex gap-2">
-                    <button onClick={speakLetterAI} disabled={loadingAudio} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
-                      {loadingAudio ? <Loader2 /> : isSpeaking ? <Pause /> : <Play />}
-                      {isSpeaking ? 'Pausar' : 'Narração AI'}
+                    <button onClick={speakLetterAI} className="bg-slate-900 text-white px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg">
+                      {isSpeaking ? <Pause /> : <Play />}
+                      {isSpeaking ? 'Pausar Narrador' : 'Narrar Voz'}
                     </button>
                     <button onClick={downloadInteractiveCard} className="bg-white text-slate-800 border px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg"><Download /> Baixar HTML</button>
                   </div>
@@ -799,16 +765,6 @@
                   <input type="text" value={customImageUrl} onChange={(e) => setCustomImageUrl(e.target.value)} placeholder="https://..." className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-xs focus:outline-none" />
                 </div>
 
-                <div className="bg-slate-50 border rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-                  <div className="flex items-center gap-2"><Volume2 /> <span className="text-xs font-bold">Voz do Narrador AI</span></div>
-                  <select value={ttsVoice} onChange={(e) => { setTtsVoice(e.target.value); setAudioUrl(null); }} className="bg-white border rounded-xl px-3 py-1.5 text-xs text-slate-700">
-                    <option value="Leda">Voz Leda (Suave)</option>
-                    <option value="Zephyr">Voz Zephyr (Animada)</option>
-                    <option value="Puck">Voz Puck (Divertida)</option>
-                    <option value="Kore">Voz Kore (Profunda)</option>
-                  </select>
-                </div>
-
                 <div className="border-t pt-4 flex flex-col sm:flex-row gap-3">
                   <button onClick={saveLetter} className="flex-grow bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-md"><Check /> Salvar Carta Online</button>
                   {isSaved && <button onClick={copyShareLink} className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition">{copySuccess ? <Check /> : <Share2 />} {copySuccess ? 'Copiado!' : 'Copiar Link'}</button>}
@@ -864,8 +820,6 @@
               </div>
             </main>
           )}
-
-          {audioUrl && <audio ref={audioRef} src={audioUrl} onEnded={() => setIsSpeaking(false)} className="hidden" />}
 
           <footer className="relative z-10 py-4 text-center text-xs text-white/70 bg-black/15 mt-8 backdrop-blur-sm">
             <p>© 2026 Love&Bond Correio Elegante - Feito para espalhar sorrisos.</p>
