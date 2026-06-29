@@ -57,7 +57,7 @@
     }
     const appId = 'correio-elegante-default';
 
-    // Ícones
+    // Ícones incorporados
     const Heart = ({ className = "w-5 h-5" }) => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
     );
@@ -99,41 +99,11 @@
     );
 
     const THEMES = [
-      {
-        id: 'romantic',
-        name: 'Amor Eterno',
-        bgClass: 'bg-gradient-to-tr from-rose-500 via-pink-600 to-red-400',
-        particleColor: '#ff4d6d',
-        accentColor: 'text-rose-600'
-      },
-      {
-        id: 'cyberpunk',
-        name: 'Futurista Cíber',
-        bgClass: 'bg-gradient-to-tr from-purple-900 via-violet-950 to-fuchsia-900',
-        particleColor: '#d946ef',
-        accentColor: 'text-fuchsia-400'
-      },
-      {
-        id: 'sunset',
-        name: 'Pôr do Sol Dourado',
-        bgClass: 'bg-gradient-to-tr from-amber-600 via-orange-500 to-rose-500',
-        particleColor: '#f97316',
-        accentColor: 'text-amber-700'
-      },
-      {
-        id: 'friendship',
-        name: 'Amizade Radiante',
-        bgClass: 'bg-gradient-to-tr from-amber-400 via-orange-500 to-yellow-400',
-        particleColor: '#f77f00',
-        accentColor: 'text-amber-700'
-      },
-      {
-        id: 'galaxy',
-        name: 'Espaço Sideral',
-        bgClass: 'bg-gradient-to-tr from-slate-900 via-indigo-950 to-purple-900',
-        particleColor: '#a78bfa',
-        accentColor: 'text-purple-400'
-      }
+      { id: 'romantic', name: 'Amor Eterno', bgClass: 'bg-gradient-to-tr from-rose-500 via-pink-600 to-red-400', particleColor: '#ff4d6d', accentColor: 'text-rose-600' },
+      { id: 'cyberpunk', name: 'Futurista Cíber', bgClass: 'bg-gradient-to-tr from-purple-900 via-violet-950 to-fuchsia-900', particleColor: '#d946ef', accentColor: 'text-fuchsia-400' },
+      { id: 'sunset', name: 'Pôr do Sol Dourado', bgClass: 'bg-gradient-to-tr from-amber-600 via-orange-500 to-rose-500', particleColor: '#f97316', accentColor: 'text-amber-700' },
+      { id: 'friendship', name: 'Amizade Radiante', bgClass: 'bg-gradient-to-tr from-amber-400 via-orange-500 to-yellow-400', particleColor: '#f77f00', accentColor: 'text-amber-700' },
+      { id: 'galaxy', name: 'Espaço Sideral', bgClass: 'bg-gradient-to-tr from-slate-900 via-indigo-950 to-purple-900', particleColor: '#a78bfa', accentColor: 'text-purple-400' }
     ];
 
     const FONTS = [
@@ -146,21 +116,26 @@
       { id: 'font-caveat', name: 'Caveat Manuscrita' }
     ];
 
-    // Configurações Customizáveis de Cores de Envelope e Cartas
-    const ENVELOPE_COLORS = [
-      { id: 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 text-stone-800', name: 'Marfim Clássico' },
-      { id: 'bg-gradient-to-br from-rose-100 to-rose-200 border-rose-300 text-rose-900', name: 'Rosa Delicado' },
-      { id: 'bg-gradient-to-br from-red-600 to-red-700 border-red-800 text-white', name: 'Vermelho Paixão' },
-      { id: 'bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-slate-100', name: 'Preto Elegante' },
-      { id: 'bg-gradient-to-br from-blue-900 to-indigo-950 border-blue-800 text-indigo-100', name: 'Azul Nobre' }
+    const ENVELOPE_DESIGNS = [
+      { id: 'bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200 text-stone-800 rounded-3xl', name: 'Tradicional Marfim' },
+      { id: 'bg-gradient-to-br from-rose-100 to-rose-200 border-rose-300 text-rose-900 rounded-3xl', name: 'Delicado Romântico' },
+      { id: 'bg-gradient-to-br from-red-600 to-red-700 border-red-800 text-white rounded-none border-t-[30px] border-t-red-800', name: 'Lacre de Cera Paixão' },
+      { id: 'bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 text-slate-100 border-double border-4', name: 'Gótico Linhas Duplas' },
+      { id: 'bg-gradient-to-br from-blue-900 via-indigo-950 to-slate-950 border-blue-500 text-indigo-100 shadow-[0_0_15px_rgba(59,130,246,0.5)]', name: 'Cápsula Tecnológica' }
     ];
 
     const CARD_COLORS = [
-      { id: 'bg-white/95 text-stone-900 border-stone-200 shadow-xl rounded-3xl border shadow-2xl', name: 'Branco Puro' },
-      { id: 'bg-amber-50/98 text-stone-800 border-stone-300 border-2 rounded-2xl p-8', name: 'Pergaminho Retro' },
-      { id: 'bg-rose-50/95 text-rose-950 border-pink-200 shadow-rose-500/10 rounded-3xl border', name: 'Rosa Suave' },
-      { id: 'bg-neutral-900/90 text-cyan-400 border-cyan-500 border-2 rounded-2xl shadow-cyan-500/20', name: 'Modo Escuro Neon' },
-      { id: 'bg-stone-100 text-amber-950 border-t-8 border-t-orange-500 rounded-xl', name: 'Borda Laranja Terracota' }
+      { id: 'bg-white/95 text-stone-900 border-stone-200 shadow-xl rounded-3xl border shadow-2xl p-8', name: 'Branco Puro' },
+      { id: 'bg-amber-50/98 text-stone-800 border-stone-300 border-2 rounded-2xl p-8', name: 'Pergaminho Vintage' },
+      { id: 'bg-rose-50/95 text-rose-950 border-pink-200 rounded-3xl border p-8', name: 'Rosa Suave' },
+      { id: 'bg-neutral-900/90 text-cyan-400 border-cyan-500 border-2 rounded-2xl shadow-cyan-500/20 p-8', name: 'Modo Neon Escuro' },
+      { id: 'bg-stone-100 text-amber-950 border-t-8 border-t-orange-500 rounded-xl p-8', name: 'Moldura Terracota' }
+    ];
+
+    const CARD_LAYOUTS = [
+      { id: 'text-center items-center justify-center', name: 'Centralizado Clássico' },
+      { id: 'text-left items-start justify-start', name: 'Alinhado à Esquerda' },
+      { id: 'text-justify items-stretch justify-start', name: 'Bloco Formal Justificado' }
     ];
 
     function App() {
@@ -168,6 +143,15 @@
       const [userLetters, setUserLetters] = useState([]);
       const [loadingAuth, setLoadingAuth] = useState(true);
 
+      // Estados do Formulário de Registro/Login Opcional
+      const [showAuthModal, setShowAuthModal] = useState(false);
+      const [authMode, setAuthMode] = useState('login'); // 'login' ou 'register'
+      const [emailInput, setEmailInput] = useState('');
+      const [passwordInput, setPasswordInput] = useState('');
+      const [firstNameInput, setFirstNameInput] = useState('');
+      const [lastNameInput, setLastNameInput] = useState('');
+
+      // Dados do Editor da Carta
       const [senderName, setSenderName] = useState('');
       const [receiverName, setReceiverName] = useState('');
       const [letterContent, setLetterContent] = useState('');
@@ -175,140 +159,84 @@
       const [selectedFont, setSelectedFont] = useState('font-serif');
       const [displayMode, setDisplayMode] = useState('traditional'); 
       const [customImageUrl, setCustomImageUrl] = useState('');
+      const [sharePassword, setSharePassword] = useState('');
+      
+      // Personalização
+      const [envelopeStyle, setEnvelopeStyle] = useState(ENVELOPE_DESIGNS[0].id);
+      const [cardStyle, setCardStyle] = useState(CARD_COLORS[0].id);
+      const [cardLayout, setCardLayout] = useState(CARD_LAYOUTS[0].id);
+
+      // Controle de Links e Salvamento
       const [isSaved, setIsSaved] = useState(false);
       const [currentLetterId, setCurrentLetterId] = useState('');
-
-      // Estados de personalização do usuário
-      const [envelopeStyle, setEnvelopeStyle] = useState(ENVELOPE_COLORS[0].id);
-      const [cardStyle, setCardStyle] = useState(CARD_COLORS[0].id);
-
       const [isRecipientView, setIsRecipientView] = useState(false);
       const [envelopeOpened, setEnvelopeOpened] = useState(false);
+      
+      // Controle de Acesso Seguro do Destinatário
+      const [dbLetterData, setDbLetterData] = useState(null);
+      const [inputAccessPassword, setInputAccessPassword] = useState('');
+      const [passwordUnlocked, setPasswordUnlocked] = useState(true);
+
       const [currentSlide, setCurrentSlide] = useState(0);
       const [revealedChars, setRevealedChars] = useState(0);
-
       const [toast, setToast] = useState({ show: false, message: '' });
       const [copySuccess, setCopySuccess] = useState(false);
       
       const canvasRef = useRef(null);
       const fileInputRef = useRef(null);
       const audioBackgroundRef = useRef(new Audio());
-
       const [isPlayingAudio, setIsPlayingAudio] = useState(false);
       const [audioFileName, setAudioFileName] = useState('');
 
+      // --- RECUPERAR ÚLTIMO ACESSO / RASCUNHO LOCAL ---
       useEffect(() => {
-        audioBackgroundRef.current.loop = true;
-        return () => {
-          audioBackgroundRef.current.pause();
-        };
+        const savedDraft = localStorage.getItem('correio_virtual_last_draft');
+        if (savedDraft) {
+          try {
+            const data = JSON.parse(savedDraft);
+            setSenderName(data.senderName || '');
+            setReceiverName(data.receiverName || '');
+            setLetterContent(data.letterContent || '');
+            if (data.font) setSelectedFont(data.font);
+            if (data.displayMode) setDisplayMode(data.displayMode);
+            if (data.envelopeStyle) setEnvelopeStyle(data.envelopeStyle);
+            if (data.cardStyle) setCardStyle(data.cardStyle);
+            if (data.cardLayout) setCardLayout(data.cardLayout);
+            if (data.customImageUrl) setCustomImageUrl(data.customImageUrl);
+          } catch(e) { console.error("Erro ao carregar rascunho anterior", e); }
+        }
       }, []);
 
-      const playEnvelopeSound = () => {
-        try {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          if (!AudioContext) return;
-          const ctx = new AudioContext();
-          
-          const bufferSize = ctx.sampleRate * 0.4; 
-          const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-          const data = buffer.getChannelData(0);
-          for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
-          }
-
-          const noise = ctx.createBufferSource();
-          noise.buffer = buffer;
-
-          const filter = ctx.createBiquadFilter();
-          filter.type = 'bandpass';
-          filter.frequency.setValueAtTime(1000, ctx.currentTime);
-          filter.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.3);
-
-          const gain = ctx.createGain();
-          gain.gain.setValueAtTime(0.3, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
-
-          noise.connect(filter);
-          filter.connect(gain);
-          gain.connect(ctx.destination);
-
-          noise.start();
-        } catch (e) {
-          console.warn("AudioContext bloqueado.");
+      // Gravar alterações no LocalStorage automaticamente
+      useEffect(() => {
+        if (!isRecipientView) {
+          const draft = { senderName, receiverName, letterContent, font: selectedFont, displayMode, envelopeStyle, cardStyle, cardLayout, customImageUrl };
+          localStorage.setItem('correio_virtual_last_draft', JSON.stringify(draft));
         }
-      };
+      }, [senderName, receiverName, letterContent, selectedFont, displayMode, envelopeStyle, cardStyle, cardLayout, customImageUrl, isRecipientView]);
 
-      const handleEnvelopeOpenClick = () => {
-        playEnvelopeSound();
-        setEnvelopeOpened(true);
-      };
+      useEffect(() => {
+        audioBackgroundRef.current.loop = true;
+        return () => { audioBackgroundRef.current.pause(); };
+      }, []);
 
-      const handleAudioUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          setAudioFileName(file.name);
-          const url = URL.createObjectURL(file);
-          audioBackgroundRef.current.src = url;
-          audioBackgroundRef.current.play()
-            .then(() => {
-              setIsPlayingAudio(true);
-              showToast('Música carregada!');
-            })
-            .catch(() => {
-              showToast('Erro ao reproduzir áudio.');
-            });
-        }
-      };
-
-      // Carregar arquivo de imagem local do dispositivo
-      const handleImageDeviceUpload = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            setCustomImageUrl(reader.result);
-            showToast('Imagem adicionada com sucesso!');
-          };
-          reader.readAsDataURL(file);
-        }
-      };
-
-      const toggleAudioPlay = () => {
-        if (!audioBackgroundRef.current.src) {
-          fileInputRef.current.click();
-          return;
-        }
-        if (isPlayingAudio) {
-          audioBackgroundRef.current.pause();
-          setIsPlayingAudio(false);
-          showToast('Música pausada.');
-        } else {
-          audioBackgroundRef.current.play();
-          setIsPlayingAudio(true);
-          showToast('Música retomada.');
-        }
-      };
-
-      // --- AUTENTICAÇÃO ANÔNIMA ---
+      // --- MONITOR DE AUTENTICAÇÃO ---
       useEffect(() => {
         if (!auth) {
           setLoadingAuth(false);
           return;
         }
-        auth.signInAnonymously()
-          .catch(err => console.error("Erro na autenticação:", err))
-          .finally(() => setLoadingAuth(false));
-
         const unsubscribe = auth.onAuthStateChanged((usr) => {
           setUser(usr);
+          setLoadingAuth(false);
+          if (usr) {
+            fetchUserLetters(usr.uid);
+          } else {
+            setUserLetters([]);
+          }
         });
         return () => unsubscribe();
       }, []);
-
-      useEffect(() => {
-        if (user) fetchUserLetters();
-      }, [user]);
 
       useEffect(() => {
         const handleHashChange = () => {
@@ -409,7 +337,7 @@
 
       // --- REVELAÇÃO GRADUAL ---
       useEffect(() => {
-        if (displayMode === 'gradual' && envelopeOpened) {
+        if (displayMode === 'gradual' && envelopeOpened && passwordUnlocked) {
           setRevealedChars(0);
           const interval = setInterval(() => {
             setRevealedChars((prev) => {
@@ -422,23 +350,61 @@
           }, 50);
           return () => clearInterval(interval);
         }
-      }, [displayMode, envelopeOpened, letterContent]);
+      }, [displayMode, envelopeOpened, letterContent, passwordUnlocked]);
 
-      // --- FIRESTORE ---
-      const fetchUserLetters = async () => {
-        if (!db || !user) return;
+      // --- INTERFACE FIREBASE (LOGIN / CADASTRO) ---
+      const handleAuthSubmit = async (e) => {
+        e.preventDefault();
+        if (!auth) {
+          showToast("Firebase não configurado.");
+          return;
+        }
         try {
-          const snap = await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').get();
-          const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-          setUserLetters(list);
+          if (authMode === 'register') {
+            const cred = await auth.createUserWithEmailAndPassword(emailInput, passwordInput);
+            if (db) {
+              await db.collection('artifacts').doc(appId).collection('users').doc(cred.user.uid).set({
+                firstName: firstNameInput,
+                lastName: lastNameInput,
+                email: emailInput,
+                createdAt: new Date().toISOString()
+              });
+            }
+            showToast(`Bem-vindo, ${firstNameInput}!`);
+          } else {
+            await auth.signInWithEmailAndPassword(emailInput, passwordInput);
+            showToast("Sessão iniciada com sucesso!");
+          }
+          setShowAuthModal(false);
+          clearAuthInputs();
         } catch (err) {
-          console.error(err);
+          showToast(err.message);
         }
       };
 
+      const handleLogout = async () => {
+        if (!auth) return;
+        await auth.signOut();
+        showToast("Você desconectou da conta.");
+      };
+
+      const clearAuthInputs = () => {
+        setEmailInput(''); setPasswordInput(''); setFirstNameInput(''); setLastNameInput('');
+      };
+
+      // --- BUSCAR E SALVAR NO BANCO ---
+      const fetchUserLetters = async (uid) => {
+        if (!db || !uid) return;
+        try {
+          const snap = await db.collection('artifacts').doc(appId).collection('users').doc(uid).collection('saved_letters').get();
+          const list = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          setUserLetters(list);
+        } catch (err) { console.error(err); }
+      };
+
       const saveLetter = async () => {
-        if (!db || !user) {
-          showToast('Banco de dados indisponível no momento.');
+        if (!db) {
+          showToast('Modo de demonstração: Firebase offline.');
           return;
         }
         if (!letterContent.trim()) {
@@ -447,28 +413,27 @@
         }
         try {
           const data = {
-            senderName,
-            receiverName,
-            letterContent,
-            themeId: selectedTheme.id,
-            font: selectedFont,
-            displayMode,
-            customImageUrl,
-            envelopeStyle,
-            cardStyle,
+            senderName, receiverName, letterContent,
+            themeId: selectedTheme.id, font: selectedFont, displayMode,
+            customImageUrl, envelopeStyle, cardStyle, cardLayout,
+            password: sharePassword.substring(0, 10), // Força limite de 10 caracteres
+            hasPassword: sharePassword.trim().length > 0,
             createdAt: new Date().toISOString()
           };
 
           const publicRef = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').add(data);
-          await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').doc(publicRef.id).set(data);
+          
+          if (user) {
+            await db.collection('artifacts').doc(appId).collection('users').doc(user.uid).collection('saved_letters').doc(publicRef.id).set(data);
+            fetchUserLetters(user.uid);
+          }
 
           setCurrentLetterId(publicRef.id);
           setIsSaved(true);
-          fetchUserLetters();
-          showToast('Carta arquivada online!');
+          showToast('Carta salva e link gerado!');
         } catch (err) {
           console.error(err);
-          showToast('Erro ao arquivar.');
+          showToast('Erro ao arquivar online.');
         }
       };
 
@@ -478,6 +443,8 @@
           const snapshot = await db.collection('artifacts').doc(appId).collection('public').doc('data').collection('letters').doc(id).get();
           if (snapshot.exists) {
             const data = snapshot.data();
+            setDbLetterData(data);
+            
             setSenderName(data.senderName || '');
             setReceiverName(data.receiverName || '');
             setLetterContent(data.letterContent || '');
@@ -485,17 +452,32 @@
             setSelectedFont(data.font || 'font-serif');
             setDisplayMode(data.displayMode || 'traditional');
             setCustomImageUrl(data.customImageUrl || '');
-            setEnvelopeStyle(data.envelopeStyle || ENVELOPE_COLORS[0].id);
+            setEnvelopeStyle(data.envelopeStyle || ENVELOPE_DESIGNS[0].id);
             setCardStyle(data.cardStyle || CARD_COLORS[0].id);
+            setCardLayout(data.cardLayout || CARD_LAYOUTS[0].id);
+
+            if (data.hasPassword && data.password) {
+              setPasswordUnlocked(false);
+            } else {
+              setPasswordUnlocked(true);
+            }
+
             setIsRecipientView(true);
             setEnvelopeOpened(false);
-            showToast('Carta carregada!');
           }
-        } catch (err) {
-          showToast('Erro ao baixar dados.');
+        } catch (err) { showToast('Erro ao baixar dados da nuvem.'); }
+      };
+
+      const verifyLetterPassword = () => {
+        if (dbLetterData && inputAccessPassword === dbLetterData.password) {
+          setPasswordUnlocked(true);
+          showToast('Senha correta! Aproveite a leitura.');
+        } else {
+          showToast('Senha incorreta. Tente novamente.');
         }
       };
 
+      // --- EXPORTAÇÃO E CONTROLES ---
       const downloadInteractiveCard = () => {
         if (!letterContent) return;
         const htmlContent = `
@@ -516,7 +498,7 @@
           </style>
         </head>
         <body class="${selectedTheme.bgClass} flex items-center justify-center min-h-screen p-4">
-          <div class="max-w-xl w-full ${cardStyle} p-8 text-center">
+          <div class="max-w-xl w-full ${cardStyle} flex flex-col ${cardLayout}">
             <h2 class="text-2xl font-bold mb-4">Para: ${receiverName || 'Especial'}</h2>
             ${customImageUrl ? `<img src="${customImageUrl}" class="w-full max-h-56 object-cover rounded-xl mb-4"/>` : ''}
             <p class="${selectedFont} text-lg leading-relaxed whitespace-pre-line">${letterContent}</p>
@@ -526,7 +508,7 @@
         </html>`;
         const element = document.createElement("a");
         element.href = URL.createObjectURL(new Blob([htmlContent], { type: 'text/html' }));
-        element.download = `Correio_Virtual_${receiverName || 'Especial'}.html`;
+        element.download = `Carta_Virtual_${receiverName || 'Destinatario'}.html`;
         document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);
@@ -537,11 +519,35 @@
         const link = `${window.location.origin}${window.location.pathname}#/letter/${currentLetterId}`;
         navigator.clipboard.writeText(link)
           .then(() => {
-            setCopySuccess(true);
-            showToast('Link copiado!');
+            setCopySuccess(true); showToast('Link copiado!');
             setTimeout(() => setCopySuccess(false), 2000);
           })
           .catch(() => showToast('Erro ao copiar link automaticamente.'));
+      };
+
+      const handleAudioUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          setAudioFileName(file.name);
+          const url = URL.createObjectURL(file);
+          audioBackgroundRef.current.src = url;
+          audioBackgroundRef.current.play().then(() => { setIsPlayingAudio(true); }).catch(() => {});
+        }
+      };
+
+      const handleImageDeviceUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => { setCustomImageUrl(reader.result); showToast('Imagem adicionada!'); };
+          reader.readAsDataURL(file);
+        }
+      };
+
+      const toggleAudioPlay = () => {
+        if (!audioBackgroundRef.current.src) { fileInputRef.current.click(); return; }
+        if (isPlayingAudio) { audioBackgroundRef.current.pause(); setIsPlayingAudio(false); }
+        else { audioBackgroundRef.current.play(); setIsPlayingAudio(true); }
       };
 
       const showToast = (message) => {
@@ -562,72 +568,129 @@
             </div>
           )}
 
-          <header className="relative z-10 px-6 py-4 flex items-center justify-between bg-white/10 backdrop-blur-md border-b border-white/10 text-white shadow-md">
+          {/* NAV HEADER */}
+          <header className="relative z-10 px-6 py-4 flex flex-wrap items-center justify-between gap-4 bg-white/10 backdrop-blur-md border-b border-white/10 text-white shadow-md">
             <div className="flex items-center gap-3">
               <div className="bg-white/20 p-2 rounded-xl"><Heart className="w-6 h-6 text-rose-500 fill-rose-500 animate-pulse" /></div>
               <div>
                 <h1 className="font-extrabold text-lg tracking-wider">Correio Virtual</h1>
-                <p className="text-xs opacity-75">Crie mensagens que encantam corações</p>
+                <p className="text-xs opacity-75">Crie mensagens protegidas e elegantes</p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleAudioUpload} 
-                accept="audio/*" 
-                className="hidden" 
-              />
-              <button 
-                onClick={toggleAudioPlay} 
-                className="bg-white/20 hover:bg-white/30 p-2.5 rounded-full text-white transition flex items-center gap-1.5 text-xs font-semibold max-w-xs"
-                title={audioFileName || "Fazer upload de música"}
-              >
+            
+            <div className="flex items-center gap-3">
+              <input type="file" ref={fileInputRef} onChange={handleAudioUpload} accept="audio/*" className="hidden" />
+              <button onClick={toggleAudioPlay} className="bg-white/20 hover:bg-white/30 p-2 rounded-xl text-white transition flex items-center gap-1.5 text-xs font-semibold">
                 {isPlayingAudio ? <Volume2 /> : <VolumeX />}
-                <span className="truncate max-w-[120px]">
-                  {audioFileName ? (isPlayingAudio ? 'Pausar' : 'Tocar Ambiência') : 'Adicionar Fundo Musical'}
-                </span>
+                <span className="truncate max-w-[100px]">{audioFileName || 'Música de Fundo'}</span>
               </button>
+
+              {user ? (
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-xl text-xs">
+                  <span className="font-medium">Olá, {user.email.split('@')[0]}</span>
+                  <button onClick={handleLogout} className="bg-red-500/80 hover:bg-red-600 text-white px-2 py-0.5 rounded font-bold transition">Sair</button>
+                </div>
+              ) : (
+                <button onClick={() => { setAuthMode('login'); setShowAuthModal(true); }} className="bg-white/20 hover:bg-white/30 text-xs px-3 py-1.5 rounded-xl font-bold transition">
+                  🔒 Login Opcional
+                </button>
+              )}
+
               {isRecipientView && (
-                <button onClick={() => { setIsRecipientView(false); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
-                  <Settings /> Voltar ao Editor
+                <button onClick={() => { setIsRecipientView(false); }} className="bg-white/20 hover:bg-white/30 text-xs px-3 py-1.5 rounded-xl font-bold flex items-center gap-1 transition">
+                  <Settings /> Painel do Editor
                 </button>
               )}
             </div>
           </header>
 
+          {/* MODAL AUTH */}
+          {showAuthModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+              <div className="bg-white w-full max-w-md p-6 rounded-3xl shadow-2xl relative animate-fade-in">
+                <button onClick={() => setShowAuthModal(false)} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-lg font-bold">✕</button>
+                <h3 className="text-xl font-bold text-slate-800 mb-2">{authMode === 'login' ? 'Entrar na Conta' : 'Criar Nova Conta'}</h3>
+                <p className="text-xs text-slate-500 mb-4">Guarde seu histórico de cartas e gerencie acessos de qualquer dispositivo.</p>
+                
+                <form onSubmit={handleAuthSubmit} className="space-y-3">
+                  {authMode === 'register' && (
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-0.5">Nome</label>
+                        <input type="text" required value={firstNameInput} onChange={e => setFirstNameInput(e.target.value)} className="w-full border rounded-xl px-3 py-1.5 text-sm" />
+                      </div>
+                      <div>
+                        <label className="text-[10px] font-bold text-slate-500 block mb-0.5">Sobrenome</label>
+                        <input type="text" required value={lastNameInput} onChange={e => setLastNameInput(e.target.value)} className="w-full border rounded-xl px-3 py-1.5 text-sm" />
+                      </div>
+                    </div>
+                  )}
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-500 block mb-0.5">E-mail</label>
+                    <input type="email" required value={emailInput} onChange={e => setEmailInput(e.target.value)} className="w-full border rounded-xl px-3 py-1.5 text-sm" />
+                  </div>
+                  <div>
+                    <label className="text-[10px] font-bold text-slate-500 block mb-0.5">Senha</label>
+                    <input type="password" required value={passwordInput} onChange={e => setPasswordInput(e.target.value)} className="w-full border rounded-xl px-3 py-1.5 text-sm" />
+                  </div>
+                  
+                  <button type="submit" className="w-full bg-rose-500 text-white font-bold py-2 rounded-xl text-sm hover:bg-rose-600 transition mt-2">
+                    {authMode === 'login' ? 'Conectar' : 'Registrar Conta'}
+                  </button>
+                </form>
+                
+                <div className="mt-4 pt-3 border-t text-center text-xs text-slate-600">
+                  {authMode === 'login' ? (
+                    <p>Não possui conta? <button onClick={() => setAuthMode('register')} className="text-rose-500 font-bold hover:underline">Cadastre-se</button></p>
+                  ) : (
+                    <p>Já tem uma conta? <button onClick={() => setAuthMode('login')} className="text-rose-500 font-bold hover:underline">Faça Login</button></p>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* MAIN CONTAINER */}
           {isRecipientView ? (
             <main className="relative z-10 flex-grow flex items-center justify-center p-4">
-              {!envelopeOpened ? (
-                <div onClick={handleEnvelopeOpenClick} className={`group cursor-pointer relative max-w-lg w-full aspect-[4/3] rounded-3xl shadow-2xl p-6 border-4 flex flex-col justify-between items-center transition-transform hover:scale-105 duration-300 ${envelopeStyle}`}>
+              {!passwordUnlocked ? (
+                <div className="max-w-md w-full bg-white/95 p-6 rounded-3xl shadow-2xl border text-center space-y-4">
+                  <div className="bg-amber-100 text-amber-700 w-12 h-12 rounded-full flex items-center justify-center mx-auto text-xl">🔒</div>
+                  <h3 className="text-lg font-bold text-slate-800">Esta carta está protegida</h3>
+                  <p className="text-xs text-slate-500">O remetente configurou uma camada de segurança. Digite a senha para abri-la.</p>
+                  <input type="password" placeholder="Senha de Acesso" value={inputAccessPassword} onChange={e => setInputAccessPassword(e.target.value)} className="w-full border text-center rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400" />
+                  <button onClick={verifyLetterPassword} className="w-full bg-rose-500 text-white py-2 rounded-xl text-xs font-bold hover:bg-rose-600 transition">Desbloquear Conteúdo</button>
+                </div>
+              ) : !envelopeOpened ? (
+                <div onClick={() => setEnvelopeOpened(true)} className={`group cursor-pointer relative max-w-lg w-full aspect-[4/3] shadow-2xl p-6 border-4 flex flex-col justify-between items-center transition-all hover:scale-105 duration-300 ${envelopeStyle}`}>
                   <div className="absolute top-0 inset-x-0 h-1/2 bg-black/5 rounded-b-[100px] shadow-inner flex justify-center items-start pt-4">
                     <div className="bg-rose-500 p-3 rounded-full text-white shadow-lg"><Heart className="w-8 h-8 fill-white text-white" /></div>
                   </div>
-                  <div className="mt-28 text-center">
-                    <span className="text-xs uppercase tracking-widest font-semibold opacity-75">Mensagem Especial Recebida</span>
+                  <div className="mt-24 text-center z-10">
+                    <span className="text-xs uppercase tracking-widest font-bold opacity-75">Correspondência Elegante</span>
                     <h3 className="text-2xl font-serif mt-2">Para: <span className="font-extrabold underline">{receiverName || 'Alguém Especial'}</span></h3>
                   </div>
-                  <div className="text-center text-xs font-medium flex items-center gap-1 animate-bounce opacity-80">Clique para abrir o envelope <ChevronRight /></div>
+                  <div className="text-center text-xs font-medium flex items-center gap-1 animate-bounce opacity-80 z-10">Toque no Envelope para Ler <ChevronRight /></div>
                 </div>
               ) : (
-                <div className={`max-w-2xl w-full ${cardStyle} p-6 md:p-10 relative`}>
+                <div className={`max-w-2xl w-full ${cardStyle} relative flex flex-col ${cardLayout}`}>
                   <div className="absolute -top-12 right-0 flex gap-2 items-center">
                     <button onClick={downloadInteractiveCard} className="bg-white text-slate-800 border px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-lg"><Download /> Baixar HTML</button>
                   </div>
 
-                  <div className="border-b border-current/20 pb-4 mb-6 flex justify-between items-end">
+                  <div className="border-b border-current/20 pb-4 mb-6 w-full flex justify-between items-end">
                     <div><span className="text-xs uppercase opacity-70">Para</span><h4 className="text-xl font-bold">{receiverName || 'Alguém Especial'}</h4></div>
                     {senderName && <div className="text-right"><span className="text-xs opacity-70 uppercase">De</span><h4 className="text-lg font-semibold italic">~{senderName}</h4></div>}
                   </div>
 
-                  {customImageUrl && <div className="mb-6 rounded-2xl overflow-hidden shadow-lg"><img src={customImageUrl} className="w-full max-h-64 object-cover" /></div>}
+                  {customImageUrl && <div className="mb-6 rounded-2xl overflow-hidden shadow-lg max-w-full"><img src={customImageUrl} className="w-full max-h-64 object-cover" /></div>}
 
-                  {displayMode === 'traditional' && <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line text-center py-4`}>{letterContent || 'Nenhuma mensagem escrita ainda...'}</div>}
+                  {displayMode === 'traditional' && <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line py-4 w-full`}>{letterContent || 'Sua mensagem aparecerá aqui...'}</div>}
 
                   {displayMode === 'slides' && (
-                    <div className="min-h-[200px] flex flex-col justify-between py-4">
-                      <div className={`text-center ${selectedFont} text-lg md:text-xl leading-relaxed`}>{getSlides()[currentSlide] || 'Nenhum parágrafo separado.'}</div>
-                      <div className="flex justify-between items-center mt-6 pt-4 border-t border-current/10">
+                    <div className="min-h-[200px] flex flex-col justify-between py-4 w-full">
+                      <div className={`${selectedFont} text-lg md:text-xl leading-relaxed text-center`}>{getSlides()[currentSlide] || 'Nenhum conteúdo definido.'}</div>
+                      <div className="flex justify-between items-center mt-6 pt-4 border-t border-current/10 w-full">
                         <button disabled={currentSlide === 0} onClick={() => setCurrentSlide(p => Math.max(0, p - 1))} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronLeft /></button>
                         <span className="text-xs font-semibold">Slide {currentSlide + 1} de {getSlides().length}</span>
                         <button disabled={currentSlide >= getSlides().length - 1} onClick={() => setCurrentSlide(p => Math.min(getSlides().length - 1, p + 1))} className="p-2 rounded-xl bg-current/5 disabled:opacity-30"><ChevronRight /></button>
@@ -636,7 +699,7 @@
                   )}
 
                   {displayMode === 'gradual' && (
-                    <div className="min-h-[150px] text-center py-4">
+                    <div className="min-h-[150px] py-4 w-full">
                       <div className={`${selectedFont} text-lg md:text-xl leading-relaxed whitespace-pre-line`}>{letterContent.substring(0, revealedChars)}</div>
                     </div>
                   )}
@@ -645,76 +708,70 @@
             </main>
           ) : (
             <main className="relative z-10 flex-grow max-w-7xl mx-auto w-full px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-7 bg-white/95 rounded-3xl shadow-xl p-6 border flex flex-col gap-6">
-                <div className="border-b pb-4 flex justify-between items-center">
+              {/* COLUNA EDITOR */}
+              <div className="lg:col-span-7 bg-white/95 rounded-3xl shadow-xl p-6 border flex flex-col gap-5">
+                <div className="border-b pb-3 flex justify-between items-center">
                   <div>
-                    <h3 className="text-xl font-bold text-slate-800">Escreva sua Mensagem</h3>
-                    <p className="text-xs text-slate-500">Personalize cada detalhe da sua declaração</p>
+                    <h3 className="text-xl font-bold text-slate-800">Compor Mensagem</h3>
+                    <p className="text-xs text-slate-500">As alterações são arquivadas no último acesso automaticamente</p>
                   </div>
-                  <button onClick={() => setIsRecipientView(true)} className="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"><Eye /> Visualizar</button>
+                  <button onClick={() => { setPasswordUnlocked(true); setIsRecipientView(true); }} className="bg-rose-50 text-rose-600 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5"><Eye /> Testar Tela</button>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Para:</label>
-                    <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Nome do destinatário" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
+                    <input type="text" value={receiverName} onChange={(e) => setReceiverName(e.target.value)} placeholder="Nome de quem recebe" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
                   </div>
                   <div>
                     <label className="block text-xs font-bold uppercase text-slate-500 mb-1">De:</label>
-                    <input type="text" value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Em branco para Anônimo" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
+                    <input type="text" value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Identificação ou Anônimo" className="w-full bg-slate-50 border rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none" />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Mensagem da Carta:</label>
-                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); }} rows={6} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-serif leading-relaxed" />
+                  <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Conteúdo Textual:</label>
+                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); }} rows={6} placeholder="Deixe os sentimentos fluírem..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-serif leading-relaxed" />
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Anexar Imagem Decorativa (Do seu Dispositivo):</label>
-                  <div className="flex items-center gap-3 mt-1">
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handleImageDeviceUpload} 
-                      className="block w-full text-xs text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 cursor-pointer" 
-                    />
-                    {customImageUrl && (
-                      <button onClick={() => setCustomImageUrl('')} className="text-xs text-red-500 underline">Remover</button>
-                    )}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-t pt-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Anexar Imagem Decorativa:</label>
+                    <input type="file" accept="image/*" onChange={handleImageDeviceUpload} className="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100 cursor-pointer" />
+                    {customImageUrl && <button onClick={() => setCustomImageUrl('')} className="text-[10px] text-red-500 underline mt-1 block">Remover arquivo anexado</button>}
                   </div>
-                  {customImageUrl && (
-                    <div className="mt-2 text-center">
-                      <span className="text-[10px] text-emerald-600 font-semibold">✓ Imagem carregada localmente com sucesso!</span>
-                    </div>
-                  )}
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-1">🔒 Senha do Link (Até 10 Chars):</label>
+                    <input type="text" maxLength={10} value={sharePassword} onChange={e => setSharePassword(e.target.value)} placeholder="Opcional: Sem senha" className="w-full bg-slate-50 border rounded-xl px-3 py-1.5 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-mono" />
+                  </div>
                 </div>
 
                 <div className="border-t pt-4 flex flex-col sm:flex-row gap-3">
-                  <button onClick={saveLetter} className="flex-grow bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-md"><Check /> Salvar Carta Online</button>
-                  {isSaved && <button onClick={copyShareLink} className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition">{copySuccess ? <Check /> : <Share2 />} {copySuccess ? 'Copiado!' : 'Copiar Link'}</button>}
+                  <button onClick={saveLetter} className="flex-grow bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 transition shadow-md"><Check /> Gerar Link de Compartilhamento</button>
+                  {isSaved && <button onClick={copyShareLink} className="bg-slate-900 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition">{copySuccess ? <Check /> : <Share2 />} {copySuccess ? 'Copiado!' : 'Copiar URL'}</button>}
                 </div>
               </div>
 
+              {/* COLUNA CUSTOMIZAÇÃO */}
               <div className="lg:col-span-5 flex flex-col gap-6">
                 
-                {/* NOVO: Configurações de Cores do Envelope e Carta */}
+                {/* DESIGN DO ENVELOPE E ESTRUTURA */}
                 <div className="bg-white/95 rounded-3xl shadow-xl p-5 border space-y-4">
                   <div>
-                    <h3 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">✉️ Cor do Envelope</h3>
-                    <div className="grid grid-cols-1 gap-1.5">
-                      {ENVELOPE_COLORS.map(env => (
+                    <h3 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">✉️ Escolher Design do Envelope</h3>
+                    <div className="grid grid-cols-1 gap-1">
+                      {ENVELOPE_DESIGNS.map(env => (
                         <button key={env.id} onClick={() => setEnvelopeStyle(env.id)} className={`py-2 px-3 text-xs rounded-xl border text-left flex justify-between items-center ${envelopeStyle === env.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100 bg-slate-50'}`}>
                           <span>{env.name}</span>
-                          <div className={`w-4 h-4 rounded-full border border-black/10 ${env.id.split(' ')[0]}`} />
+                          <div className={`w-4 h-4 rounded border border-black/10 ${env.id.split(' ')[0]}`} />
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div>
-                    <h3 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">📄 Estilo e Cor da Carta</h3>
-                    <div className="grid grid-cols-1 gap-1.5">
+                    <h3 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">📄 Estilo Cromático da Carta</h3>
+                    <div className="grid grid-cols-1 gap-1">
                       {CARD_COLORS.map(card => (
                         <button key={card.id} onClick={() => setCardStyle(card.id)} className={`py-2 px-3 text-xs rounded-xl border text-left flex justify-between items-center ${cardStyle === card.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100 bg-slate-50'}`}>
                           <span>{card.name}</span>
@@ -723,46 +780,61 @@
                       ))}
                     </div>
                   </div>
-                </div>
 
-                <div className="bg-white/95 rounded-3xl shadow-xl p-5 border">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><Layers /> Tema de Fundo (Partículas)</h3>
-                  <div className="grid grid-cols-1 gap-2">
-                    {THEMES.map((theme) => (
-                      <button key={theme.id} onClick={() => setSelectedTheme(theme)} className={`p-3 rounded-2xl border text-left flex items-center justify-between ${selectedTheme.id === theme.id ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-100'}`}>
-                        <span className="text-xs font-bold text-slate-800">{theme.name}</span>
-                        <div className={`w-6 h-6 rounded-full ${theme.bgClass}`} />
-                      </button>
-                    ))}
+                  <div>
+                    <h3 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5">📐 Estruturar Layout da Carta</h3>
+                    <div className="grid grid-cols-1 gap-1">
+                      {CARD_LAYOUTS.map(layout => (
+                        <button key={layout.id} onClick={() => setCardLayout(layout.id)} className={`py-2 px-3 text-xs rounded-xl border text-left ${cardLayout === layout.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100 bg-slate-50'}`}>
+                          {layout.name}
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 </div>
 
+                {/* TEMAS E TIPOGRAFIA ANTERIORES PRESERVADOS */}
                 <div className="bg-white/95 rounded-3xl shadow-xl p-5 border space-y-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Tipografia (Fonte):</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {FONTS.map(f => <button key={f.id} onClick={() => setSelectedFont(f.id)} className={`py-1.5 text-xs rounded-xl border text-center ${selectedFont === f.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{f.name}</button>)}
+                    <h3 className="text-xs font-bold text-slate-800 uppercase mb-2 flex items-center gap-1.5"><Layers /> Tema de Partículas</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                      {THEMES.map((theme) => (
+                        <button key={theme.id} onClick={() => setSelectedTheme(theme)} className={`p-2 rounded-xl border text-left flex items-center justify-between ${selectedTheme.id === theme.id ? 'border-rose-500 bg-rose-50' : 'border-slate-100'}`}>
+                          <span className="text-xs font-semibold text-slate-700">{theme.name}</span>
+                          <div className={`w-4 h-4 rounded-full ${theme.bgClass}`} />
+                        </button>
+                      ))}
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold uppercase text-slate-500 mb-2">Formato de Exibição:</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      <button onClick={() => setDisplayMode('traditional')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'traditional' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>📃 Normal</button>
-                      <button onClick={() => setDisplayMode('slides')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'slides' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>🎴 Slides</button>
-                      <button onClick={() => setDisplayMode('gradual')} className={`py-1.5 text-xs rounded-xl border ${displayMode === 'gradual' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>✍️ Tipo</button>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Tipografia:</label>
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {FONTS.map(f => <button key={f.id} onClick={() => setSelectedFont(f.id)} className={`py-1 text-xs rounded-xl border text-center ${selectedFont === f.id ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>{f.name}</button>)}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-500 mb-1">Formato de Exibição:</label>
+                    <div className="grid grid-cols-3 gap-1.5">
+                      <button onClick={() => setDisplayMode('traditional')} className={`py-1 text-xs rounded-xl border ${displayMode === 'traditional' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>📃 Normal</button>
+                      <button onClick={() => setDisplayMode('slides')} className={`py-1 text-xs rounded-xl border ${displayMode === 'slides' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>🎴 Slides</button>
+                      <button onClick={() => setDisplayMode('gradual')} className={`py-1 text-xs rounded-xl border ${displayMode === 'gradual' ? 'border-rose-500 bg-rose-50 font-bold' : 'border-slate-100'}`}>✍️ Tipo</button>
                     </div>
                   </div>
                 </div>
 
+                {/* HISTÓRICO DA CONTA LOGADA */}
                 <div className="bg-white/95 rounded-3xl shadow-xl p-5 border">
-                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><FileText /> Minhas Cartas Recentes</h3>
-                  {userLetters.length === 0 ? (
-                    <p className="text-xs text-slate-400 italic text-center py-2">Nenhuma carta arquivada.</p>
+                  <h3 className="text-xs font-bold text-slate-800 uppercase mb-3 flex items-center gap-1.5"><FileText /> Cartas na minha Conta</h3>
+                  {!user ? (
+                    <p className="text-xs text-slate-400 italic text-center py-2">Faça login para sincronizar e salvar em nuvem permanente.</p>
+                  ) : userLetters.length === 0 ? (
+                    <p className="text-xs text-slate-400 italic text-center py-2">Nenhuma carta arquivada nesta conta ainda.</p>
                   ) : (
-                    <div className="max-h-40 overflow-y-auto space-y-2">
+                    <div className="max-h-40 overflow-y-auto space-y-1.5">
                       {userLetters.map(l => (
-                        <div key={l.id} className="p-2.5 bg-slate-50 rounded-xl flex items-center justify-between border text-xs">
+                        <div key={l.id} className="p-2 bg-slate-50 rounded-xl flex items-center justify-between border text-xs">
                           <span className="truncate font-bold text-slate-700">Para: {l.receiverName || 'Alguém'}</span>
                           <button onClick={() => loadLetterFromDb(l.id)} className="bg-rose-500 text-white p-1 rounded-lg"><Eye /></button>
                         </div>
@@ -770,6 +842,7 @@
                     </div>
                   )}
                 </div>
+
               </div>
             </main>
           )}
