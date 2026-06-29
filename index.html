@@ -9,7 +9,7 @@
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&family=Playfair+Display:ital,wght=0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght=0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
@@ -44,7 +44,6 @@
       appId: "" 
     };
 
-    // Inicializando Firebase com verificação de segurança
     let app, auth, db;
     if (firebaseConfig.apiKey) {
       try {
@@ -56,9 +55,9 @@
       }
     }
     const appId = 'correio-elegante-default';
-    const apiKey = ""; // Insira sua chave API do Gemini aqui para habilitar a IA de texto, tradução e voz
+    const apiKey = ""; 
 
-    // Ícones Reutilizáveis em formato SVG puro para evitar conflitos no React
+    // Ícones Reutilizáveis
     const Heart = ({ className = "w-5 h-5" }) => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
     );
@@ -79,9 +78,6 @@
     );
     const Languages = () => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>
-    );
-    const Wand2 = ({ className = "" }) => (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`inline-block w-4 h-4 ${className}`}><path d="m15 4 5 5"/><path d="m3 20 12-12"/><path d="m19 2-2 2"/><path d="m22 5-2-2"/><path d="m16 2 1 1"/><path d="m21 7-1-1"/><path d="M13 1h1"/><path d="M1 13v1"/></svg>
     );
     const Play = () => (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block w-3.5 h-3.5 text-emerald-400"><polygon points="6 3 20 12 6 21 6 3"/></svg>
@@ -185,7 +181,6 @@
       const [selectedFont, setSelectedFont] = useState('font-serif');
       const [displayMode, setDisplayMode] = useState('traditional'); 
       const [customImageUrl, setCustomImageUrl] = useState('');
-      const [isPlayingSynth, setIsPlayingSynth] = useState(false);
       const [isSaved, setIsSaved] = useState(false);
       const [currentLetterId, setCurrentLetterId] = useState('');
 
@@ -194,23 +189,61 @@
       const [currentSlide, setCurrentSlide] = useState(0);
       const [revealedChars, setRevealedChars] = useState(0);
 
-      const [aiPrompt, setAiPrompt] = useState('');
-      const [aiTone, setAiTone] = useState('romantico');
-      const [isGeneratingAI, setIsGeneratingAI] = useState(false);
       const [isTranslating, setIsTranslating] = useState(false);
       const [targetLang, setTargetLang] = useState('en');
 
       const [isSpeaking, setIsSpeaking] = useState(false);
-      const [audioUrl, setAudioUrl] = useState(null);
-      const [ttsVoice, setTtsVoice] = useState('en-US-Neural2-F'); 
-      const [loadingAudio, setLoadingAudio] = useState(false);
-      const audioRef = useRef(null);
-
       const [toast, setToast] = useState({ show: false, message: '' });
       const [copySuccess, setCopySuccess] = useState(false);
+      
       const canvasRef = useRef(null);
-      const synthAudioCtxRef = useRef(null);
-      const synthNodesRef = useRef([]);
+      const fileInputRef = useRef(null);
+      const audioBackgroundRef = useRef(new Audio());
+
+      const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+      const [audioFileName, setAudioFileName] = useState('');
+
+      // Configuração inicial do loop de áudio do dispositivo
+      useEffect(() => {
+        audioBackgroundRef.current.loop = true;
+        return () => {
+          audioBackgroundRef.current.pause();
+        };
+      }, []);
+
+      // Mapear Upload de Áudio Local
+      const handleAudioUpload = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          setAudioFileName(file.name);
+          const url = URL.createObjectURL(file);
+          audioBackgroundRef.current.src = url;
+          audioBackgroundRef.current.play()
+            .then(() => {
+              setIsPlayingAudio(true);
+              showToast('Música carregada e tocando!');
+            })
+            .catch(() => {
+              showToast('Erro ao reproduzir arquivo.');
+            });
+        }
+      };
+
+      const toggleAudioPlay = () => {
+        if (!audioBackgroundRef.current.src) {
+          fileInputRef.current.click();
+          return;
+        }
+        if (isPlayingAudio) {
+          audioBackgroundRef.current.pause();
+          setIsPlayingAudio(false);
+          showToast('Música pausada.');
+        } else {
+          audioBackgroundRef.current.play();
+          setIsPlayingAudio(true);
+          showToast('Música retomada.');
+        }
+      };
 
       // --- AUTENTICAÇÃO ANÔNIMA ---
       useEffect(() => {
@@ -346,80 +379,7 @@
         }
       }, [displayMode, envelopeOpened, letterContent]);
 
-      // --- MÚSICA DE FUNDO COM SINTETIZADOR WEB AUDIO API ---
-      const toggleAmbientMusic = () => {
-        if (isPlayingSynth) {
-          if (synthAudioCtxRef.current) {
-            try { synthAudioCtxRef.current.close(); } catch(e){}
-            synthAudioCtxRef.current = null;
-          }
-          setIsPlayingSynth(false);
-          showToast('Música de fundo pausada.');
-        } else {
-          try {
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            const ctx = new AudioContext();
-            synthAudioCtxRef.current = ctx;
-
-            const progression = [
-              [130.81, 164.81, 196.00, 246.94, 293.66], 
-              [110.00, 130.81, 164.81, 220.00, 261.63], 
-              [87.31, 130.81, 174.61, 220.00, 261.63],  
-              [98.00, 146.83, 196.00, 246.94, 293.66]   
-            ];
-            let currentChordIndex = 0;
-
-            const playChord = () => {
-              if (!synthAudioCtxRef.current) return;
-              const now = synthAudioCtxRef.current.currentTime;
-              const chord = progression[currentChordIndex];
-
-              chord.forEach((freq) => {
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                const filter = ctx.createBiquadFilter();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(freq, now);
-                filter.type = 'lowpass';
-                filter.frequency.setValueAtTime(400, now);
-
-                gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.04 / chord.length, now + 3);
-                gain.gain.setValueAtTime(0.04 / chord.length, now + 7);
-                gain.gain.exponentialRampToValueAtTime(0.0001, now + 12);
-
-                osc.connect(filter);
-                filter.connect(gain);
-                gain.connect(ctx.destination);
-
-                osc.start(now);
-                osc.stop(now + 12.5);
-              });
-
-              currentChordIndex = (currentChordIndex + 1) % progression.length;
-              synthNodesRef.current.push(setTimeout(playChord, 10000));
-            };
-
-            playChord();
-            setIsPlayingSynth(true);
-            showToast('Música ambiente ativada!');
-          } catch (err) {
-            showToast('Clique novamente para liberar o áudio.');
-          }
-        }
-      };
-
-      useEffect(() => {
-        return () => {
-          synthNodesRef.current.forEach(timer => clearTimeout(timer));
-          if (synthAudioCtxRef.current) {
-            try { synthAudioCtxRef.current.close(); } catch(e){}
-          }
-        };
-      }, []);
-
-      // --- FIRESTORE OPERAÇÕES CORRIGIDAS ---
+      // --- FIRESTORE OPERAÇÕES ---
       const fetchUserLetters = async () => {
         if (!db || !user) return;
         try {
@@ -505,32 +465,7 @@
         throw new Error('Falha na requisição.');
       };
 
-      // --- ASSISTENTE DE ESCRITA IA (CORRIGIDO ENDPOINT) ---
-      const handleGenerateAI = async () => {
-        if (!aiPrompt.trim() || !apiKey) {
-          showToast(apiKey ? 'Digite sua ideia para a carta.' : 'Defina a variável apiKey no código.');
-          return;
-        }
-        setIsGeneratingAI(true);
-        const systemPrompt = `Você é um escritor poético de Correio Elegante. Escreva uma linda mensagem com base no tom (${aiTone}). Retorne apenas o texto final da carta diretamente, sem introduções ou observações extras.`;
-        
-        try {
-          const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-          const payload = {
-            contents: [{ parts: [{ text: `Mensagem sobre: "${aiPrompt}". Remetente: "${senderName}", Destinatário: "${receiverName}".` }] }],
-            systemInstruction: { parts: [{ text: systemPrompt }] }
-          };
-          const result = await fetchWithBackoff(url, payload);
-          const text = result.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) setLetterContent(text.trim());
-        } catch (err) {
-          showToast('Erro na IA de escrita.');
-        } finally {
-          setIsGeneratingAI(false);
-        }
-      };
-
-      // --- TRADUTOR IA (CORRIGIDO ENDPOINT) ---
+      // --- TRADUTOR IA ---
       const handleTranslateAI = async () => {
         if (!letterContent.trim() || !apiKey) {
           showToast('Escreva algo na carta para traduzir.');
@@ -553,27 +488,21 @@
         }
       };
 
-      // --- NARRADOR REFORMULADO (Usando a Web Speech API nativa para maior compatibilidade de áudio) ---
+      // --- NARRADOR REFORMULADO ---
       const speakLetterAI = () => {
         if (!letterContent.trim()) {
           showToast('Sem texto para narrar.');
           return;
         }
-
         if (isSpeaking) {
           window.speechSynthesis.cancel();
           setIsSpeaking(false);
           return;
         }
-
         const utterance = new SpeechSynthesisUtterance(letterContent);
-        
-        // Configura para ler em português se não estiver traduzido
         utterance.lang = targetLang === 'en' ? 'pt-BR' : targetLang;
-        
         utterance.onend = () => setIsSpeaking(false);
         utterance.onerror = () => setIsSpeaking(false);
-
         setIsSpeaking(true);
         window.speechSynthesis.speak(utterance);
       };
@@ -643,10 +572,31 @@
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button onClick={toggleAmbientMusic} className="bg-white/20 hover:bg-white/30 p-2.5 rounded-full text-white transition flex items-center gap-1.5 text-xs font-semibold">
-                {isPlayingSynth ? <Volume2 /> : <VolumeX />}
-                <span>{isPlayingSynth ? 'Sintetizador ON' : 'Sem Áudio'}</span>
+              <input 
+                type="file" 
+                ref={fileInputRef} 
+                onChange={handleAudioUpload} 
+                accept="audio/*" 
+                className="hidden" 
+              />
+              <button 
+                onClick={toggleAudioPlay} 
+                className="bg-white/20 hover:bg-white/30 p-2.5 rounded-full text-white transition flex items-center gap-1.5 text-xs font-semibold max-w-xs"
+                title={audioFileName || "Fazer upload de música"}
+              >
+                {isPlayingAudio ? <Volume2 /> : <VolumeX />}
+                <span className="truncate max-w-[120px]">
+                  {audioFileName ? (isPlayingAudio ? 'Pausar' : 'Tocar') : 'Enviar Música'}
+                </span>
               </button>
+              {audioFileName && (
+                <button 
+                  onClick={() => fileInputRef.current.click()} 
+                  className="bg-white/10 hover:bg-white/20 text-[10px] px-2 py-1 rounded-lg"
+                >
+                  Trocar
+                </button>
+              )}
               {isRecipientView && (
                 <button onClick={() => { setIsRecipientView(false); setIsSpeaking(false); window.speechSynthesis.cancel(); }} className="bg-white/20 hover:bg-white/30 text-xs px-4 py-2 rounded-xl font-bold flex items-center gap-1 transition">
                   <Settings /> Voltar ao Editor
@@ -728,21 +678,6 @@
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-r from-violet-50 to-indigo-50 border border-indigo-100 rounded-2xl p-4">
-                  <div className="flex items-center gap-2 mb-2 text-indigo-900 font-bold text-sm"><Wand2 /> <span>Escritor Assistente IA</span></div>
-                  <div className="grid grid-cols-1 md:grid-cols-12 gap-3">
-                    <input type="text" value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder="Ex: Agradecendo por estar sempre do meu lado..." className="md:col-span-8 bg-white border rounded-xl px-3 py-2 text-xs focus:outline-none" />
-                    <div className="md:col-span-4 flex gap-2">
-                      <select value={aiTone} onChange={(e) => setAiTone(e.target.value)} className="bg-white border rounded-xl px-2 text-xs text-slate-700">
-                        <option value="romantico">💘 Romântico</option>
-                        <option value="amizade">🌟 Amigo</option>
-                        <option value="divertido">🤪 Engraçado</option>
-                      </select>
-                      <button onClick={handleGenerateAI} disabled={isGeneratingAI} className="bg-indigo-600 text-white rounded-xl text-xs font-bold px-4 flex items-center justify-center">{isGeneratingAI ? <Loader2 /> : 'Gerar'}</button>
-                    </div>
-                  </div>
-                </div>
-
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <label className="block text-xs font-bold uppercase text-slate-500">Mensagem da Carta:</label>
@@ -757,7 +692,7 @@
                       </button>
                     </div>
                   </div>
-                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); setAudioUrl(null); }} rows={6} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-serif leading-relaxed" />
+                  <textarea value={letterContent} onChange={(e) => { setLetterContent(e.target.value); setIsSaved(false); }} rows={6} placeholder="Abra seu coração..." className="w-full bg-slate-50 border rounded-2xl px-4 py-3 text-sm focus:ring-2 focus:ring-rose-400 focus:outline-none font-serif leading-relaxed" />
                 </div>
 
                 <div>
